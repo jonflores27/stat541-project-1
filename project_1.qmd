@@ -1,8 +1,28 @@
 ---
-title: "project 1"
+title: "Project -  report"
 author: "Jonathan Flores Martinez"
+date: "3 April 2026"
 format: html
-editor: visual
+editor: source
+embed-resources: true
+execute: 
+  echo: true
+  warning: false
+  message: false
+code-fold: true
+code-tools: true
 ---
 
-## 
+# Environmental Plastic
+
+## Context of the Data
+
+## Cleaning Already Performed on Data
+
+## Possible Research Questions
+
+### Assessed using the data
+
+### Assessed using supplemental data
+
+## Possible Visualizations
