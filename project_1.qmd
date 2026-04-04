@@ -16,19 +16,23 @@ code-tools: true
 # Environmental Plastic
 
 ## Context of the Data
+This was data frame with information on plastic. It was collected by jkdhfklwhdf. They are an environmental activist with an interest in data ... more context...
 
 ## Cleaning Already Performed on Data
+The original form of this data was a folder published by the GHHGHGHGJHGJHGJ. This folder contained the data in individual csv files per country. This was combined into a single df by using a map function. Some clean up including name changes, duplicate data deletion and adding more info was done after the data for each country was combined and then the two years as well.
 
 ## Possible Research Questions
 
 ### Assessed using the data
-- We could ask if there was a change in the generation of plastic waste from one year to another. This can be looked at both by country and by parent company.
+- We could ask if there was a change in the generation of plastic waste from one year to another. This can be looked at both by country and by parent company. We can see in what direction progress is going by looking at this data
+
+- We could look at the number of counting events and volunteers across the countries. This, along with the waste information can help us look at the impact of volunteer work. Maybe the difference in plastic waste could be correlated to the amount of volunteers and events dedicated to clean up.
 
 
 ### Assessed using supplemental data
-- We could ask if the type of plastic being used in the country depends on how developed the country is. Myabe some plastic is cheaper to produce and used in higher proportions in countries with less money
+- We could ask if the type of plastic being used in the country depends on how developed the country is. Maybe some plastic is cheaper to produce and used in higher proportions in countries with less money. This matters because some plastics may be more harmful to the environment and keeping track of it would be important
 
-- We could exlore the amount of waste created by companies and see if they have environmentally friendly production practices and see if that makes a difference
+- We could explore the amount of waste created by companies and see if they have environmentally friendly production practices and see if that makes a difference. This could help determine the impact that said practices and policies have on the creation of plastic pollution
 
 
 ## Possible Visualizations
