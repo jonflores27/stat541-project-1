@@ -22,7 +22,31 @@ code-tools: true
 ## Possible Research Questions
 
 ### Assessed using the data
+- We could ask if there was a change in the generation of plastic waste from one year to another. This can be looked at both by country and by parent company.
+
 
 ### Assessed using supplemental data
+- We could ask if the type of plastic being used in the country depends on how developed the country is. Myabe some plastic is cheaper to produce and used in higher proportions in countries with less money
+
+- We could exlore the amount of waste created by companies and see if they have environmentally friendly production practices and see if that makes a difference
+
 
 ## Possible Visualizations
+
+
+
+```{r}
+plastics <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2021/2021-01-26/plastics.csv')
+
+```
+
+```{r}
+
+library(tidyverse)
+plastics |> 
+  summary()
+  
+```
+
+
+
