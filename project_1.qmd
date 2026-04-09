@@ -15,6 +15,8 @@ code-tools: true
 
 # Environmental Plastic
 
+# Check in 1: Exploring the data and Generating Research Questions
+
 ## Context of the Data
 
 This was a data frame with information on plastic pollution. It was originally collected by the Break Free From Plastic (BFFP) group. They are an environmental activist with an interest in reducing the amount of plastic waste in the world. They focus on reducing the use of single use plastics and other actions across the entire life cycle of plastics. They believe that the best way to address plastic pollution comes from prevention over treating the effects of pollution. The data is two years (2019 and 2020) worth of data collected through global audits that BFFP does trying to understand the sources of plastic waste creation. The information provided by the data set is the country, parent company which created the plastic waste, the number of clean up events and volunteers, and the counts of plastic waste. This was unit-less so I am assuming individual plastic pieces collected at the event. There was a grand total count and multiple columns representing the different types of plastics ranging from the thin material of bags to PVC pipe plastic. Each row seems to represent a country and company combination. There are over 10,000 rows of data.
@@ -46,14 +48,62 @@ The dot's size could also be different sizes depending on how many companies are
 ![](images/clipboard-2837951265.png)
 
 ```{r}
+
+library(tidyverse)
+library(gt)
+
 plastics <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2021/2021-01-26/plastics.csv')
 
 ```
 
-```{r}
 
-library(tidyverse)
+# Check in 2: Initial Data Manipulation Functions
+
+```{r}
 plastics |> 
   summary()
 
 ```
+```{r}
+
+plastics |> 
+  group_by(country,year) |> 
+  summarise(sum(grand_total), mean(num_events), .groups = "drop") |> 
+  mutate(event_impact = `sum(grand_total)`/`mean(num_events)`) |> 
+  select(country, `mean(num_events)`, event_impact) |> 
+  gt()
+
+
+```
+
+
+Two data summaries that use existing (unmodified) columns in the data
+At least one of these summaries need to be produced with a custom function.
+At least one of these summaries need to include iteration (either inside or outside of a function).
+
+```{r}
+plastics |> 
+  mutate(v_effort = grand_total/volunteers,
+         event_impact = grand_total/num_events)
+
+```
+
+
+Two data summaries that modify columns from the original data
+At least one of these summaries need to be produced with a custom function.
+At least one of these summaries need to include iteration (either inside or outside of a function).
+
+```{r}
+
+
+
+```
+
+
+Stat 541 only: Summary tables must at a minimum have:
+Formatted values (e.g., decimals, percentages, currencies)
+Boldface headers
+Captions
+
+
+
