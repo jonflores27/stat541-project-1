@@ -79,55 +79,51 @@ plastics_clean|>
   filter(grand_total != total)
 ```
 
-
-
-```{r}
-
-rate_ify <- function(df, numerator, denominator, name = rate){
-  df |> mutate({{name}} := {{numerator}}/{{denominator}})
-}
-
-plastics |> 
-  group_by(country,year) |> 
-  summarise(total_trash = sum(grand_total),
-            num_events = mean(num_events),
-            .groups = "drop") |>
-  rate_ify(total_trash, num_events, avg_event_impact) |> 
- 
-  gt() |>
-  fmt_number(columns = avg_event_impact, drop_trailing_zeros = TRUE)
-```           
-
-  
-
-
-```
-
-
 Two data summaries that use existing (unmodified) columns in the data
 At least one of these summaries need to be produced with a custom function.
 At least one of these summaries need to include iteration (either inside or outside of a function).
-
-```{r}
-
-```
 
 
 Two data summaries that modify columns from the original data
 At least one of these summaries need to be produced with a custom function.
 At least one of these summaries need to include iteration (either inside or outside of a function).
 
+#### 
 ```{r}
 
+rate_ify <- function(df, numerator, denominator, name = rate){
+  df |> mutate({{name}} := {{numerator}}/{{denominator}})
+}
+
+plastics_clean |> 
+  group_by(country,year) |> 
+  summarise(total_trash = sum(total),
+            num_events = mean(num_events),
+            .groups = "drop") |>
+  rate_ify(numerator = total_trash,
+           denominator = num_events,
+           name = avg_event_impact) |> 
+  filter(country %in% c("India",
+                        "China",
+                        "United States of America",
+                        "Indonesia", 
+                        "Nigeria")) |>
+ 
+  gt() |>
+  fmt_number(columns = avg_event_impact, drop_trailing_zeros = TRUE) |> 
+  tab_style(style = cell_text(weight = "bold"),
+    locations = cells_column_labels()) |>
+  tab_caption("Rate of Plastic Accounted per Audit for 
+              Highly Populated Countries") |>
+  cols_label(country = "Country", 
+             year = "Year",
+             total_trash = "Total Count of Plastics",
+             num_events = "Number of Audit Events",
+             avg_event_impact = "Average Waste Accounted for per Audit")
+```           
 
 
-```
 
-
-Stat 541 only: Summary tables must at a minimum have:
-Formatted values (e.g., decimals, percentages, currencies)
-Boldface headers
-Captions
 
 #### Proportions of Plastics for each Country
 
@@ -167,5 +163,8 @@ plastics |>
              pvc = "PVC")
 
 ```
-```
 
+Stat 541 only: Summary tables must at a minimum have:
+Formatted values (e.g., decimals, percentages, currencies)
+Boldface headers
+Captions
