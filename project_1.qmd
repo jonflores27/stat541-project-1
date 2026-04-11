@@ -83,6 +83,92 @@ Two data summaries that use existing (unmodified) columns in the data
 At least one of these summaries need to be produced with a custom function.
 At least one of these summaries need to include iteration (either inside or outside of a function).
 
+```{r}
+library(tidyverse)
+library(gt)
+
+country_profile <- function(data, group_var1, group_var2, min_audits = 10) {
+  data |>
+    filter(!is.na(country), country != "EMPTY") |>
+    group_by({{ group_var1 }}, {{ group_var2 }}) |>
+    summarise(
+      audits = n(),
+      total_pieces = sum(grand_total),
+      median_pieces = median(grand_total),
+      mean_pieces = mean(grand_total),
+      max_pieces = max(grand_total),
+      .groups = "drop"
+    ) |>
+    filter(audits >= min_audits) |>
+    arrange({{ group_var1 }}, {{ group_var2 }}) |>
+    gt() |>
+    tab_header(
+      title = md(
+        paste0(
+          "**Table.** Plastic cleanup profile by country and year for countries with at least ",
+           min_audits,
+          " audits."
+        )
+      )
+  ) |>
+  fmt_number(
+    columns = c(audits, total_pieces, median_pieces, mean_pieces, max_pieces),
+    decimals = 1,
+    use_seps = TRUE
+  ) |>
+  cols_label(
+    country = md("**Country**"),
+    year = md("**Year**"),
+    audits = md("**Audits**"),
+    total_pieces = md("**Total Pieces**"),
+    median_pieces = md("**Median Pieces**"),
+    mean_pieces = md("**Mean Pieces**"),
+    max_pieces = md("**Max Pieces**")
+  )
+}
+
+
+country_profile(plastics, country, year, min_audits = 1) 
+```
+
+```{r}
+plastic_cols <- c("hdpe", "ldpe", "o", "pet", "pp", "ps", "pvc")
+
+map_dfr(plastic_cols, function(col) {
+  tibble(
+    plastic_type = col,
+    total = sum(plastics[[col]]),
+    mean = mean(plastics[[col]]),
+    median = median(plastics[[col]]),
+    sd = sd(plastics[[col]]),
+    iqr = IQR(plastics[[col]]),
+    min = min(plastics[[col]]),
+    max = max(plastics[[col]]),
+    audits_with_plastic_type = sum(plastics[[col]] > 0),
+    percent_of_audits = mean(plastics[[col]] > 0)
+  )
+}) |>
+  gt() |>
+  fmt_percent(columns = percent_of_audits, decimals = 1) |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_header("Summary statistics for each plastic type across all audits") |>
+  cols_label(
+    plastic_type = "Plastic Type",
+    total = "Total",
+    mean = "Mean",
+    median = "Median",
+    sd = "SD",
+    iqr = "IQR",
+    min = "Min",
+    max = "Max",
+    audits_with_plastic_type = "Audits With Plastic Type",
+    percent_of_audits = "Percent of Audits"
+  )
+
+```
 
 Two data summaries that modify columns from the original data
 At least one of these summaries need to be produced with a custom function.
