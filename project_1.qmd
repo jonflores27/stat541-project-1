@@ -10,6 +10,8 @@ execute:
   warning: false
   message: false
 code-tools: true
+toc: true
+toc-location: right
 ---
 
 # Environmental Plastic
@@ -62,6 +64,7 @@ plastics |>
   summary()
 
 ```
+## Cleaning up NA Values
 
 ```{r}
 plastics_clean <- plastics |> 
@@ -77,13 +80,11 @@ plastics_clean|>
   filter(grand_total != total)
 ```
 
-```{r}
-plastics_clean |>
-  filter(if_any(empty:grand_total, is.na))
-```
+## Summaries using unmodified columns
 
 Two data summaries that use existing (unmodified) columns in the data At least one of these summaries need to be produced with a custom function. At least one of these summaries need to include iteration (either inside or outside of a function).
 
+### Plastic Cleanup Profile by Country and Year
 ```{r}
 library(tidyverse)
 library(gt)
@@ -132,6 +133,9 @@ country_profile <- function(data, group_var1, group_var2, min_audits = 10) {
 country_profile(plastics_clean, country, year, min_audits = 1) 
 ```
 
+
+
+### Plastic Type Across All Audits
 ```{r}
 plastic_cols <- c("hdpe", "ldpe", "o", "pet", "pp", "ps", "pvc")
 
@@ -171,9 +175,11 @@ map_dfr(plastic_cols, function(col) {
 
 ```
 
+
+## Data Summaries Using Modiefied Columns
 Two data summaries that modify columns from the original data At least one of these summaries need to be produced with a custom function. At least one of these summaries need to include iteration (either inside or outside of a function).
 
-#### 
+### Waste per Audit Summary
 
 ```{r}
 
@@ -210,7 +216,7 @@ plastics_clean |>
              avg_event_impact = "Average Waste Accounted for per Audit")
 ```
 
-#### Proportions of Plastics for each Country
+### Proportions of Plastics for each Country
 
 ```{r}
 

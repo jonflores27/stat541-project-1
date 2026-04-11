@@ -2201,10 +2201,43 @@ vertical-align: -.125em;
 
 </head>
 
-<body class="fullcontent quarto-light">
+<body class="quarto-light">
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#environmental-plastic" id="toc-environmental-plastic" class="nav-link active" data-scroll-target="#environmental-plastic">Environmental Plastic</a></li>
+  <li><a href="#check-in-1-exploring-the-data-and-generating-research-questions" id="toc-check-in-1-exploring-the-data-and-generating-research-questions" class="nav-link" data-scroll-target="#check-in-1-exploring-the-data-and-generating-research-questions">Check in 1: Exploring the data and Generating Research Questions</a>
+  <ul class="collapse">
+  <li><a href="#context-of-the-data" id="toc-context-of-the-data" class="nav-link" data-scroll-target="#context-of-the-data">Context of the Data</a></li>
+  <li><a href="#cleaning-already-performed-on-data" id="toc-cleaning-already-performed-on-data" class="nav-link" data-scroll-target="#cleaning-already-performed-on-data">Cleaning Already Performed on Data</a></li>
+  <li><a href="#possible-research-questions" id="toc-possible-research-questions" class="nav-link" data-scroll-target="#possible-research-questions">Possible Research Questions</a>
+  <ul class="collapse">
+  <li><a href="#assessed-using-the-data" id="toc-assessed-using-the-data" class="nav-link" data-scroll-target="#assessed-using-the-data">Assessed using the data</a></li>
+  <li><a href="#assessed-using-supplemental-data" id="toc-assessed-using-supplemental-data" class="nav-link" data-scroll-target="#assessed-using-supplemental-data">Assessed using supplemental data</a></li>
+  </ul></li>
+  <li><a href="#possible-visualizations" id="toc-possible-visualizations" class="nav-link" data-scroll-target="#possible-visualizations">Possible Visualizations</a></li>
+  </ul></li>
+  <li><a href="#check-in-2-initial-data-manipulation-functions" id="toc-check-in-2-initial-data-manipulation-functions" class="nav-link" data-scroll-target="#check-in-2-initial-data-manipulation-functions">Check in 2: Initial Data Manipulation Functions</a>
+  <ul class="collapse">
+  <li><a href="#cleaning-up-na-values" id="toc-cleaning-up-na-values" class="nav-link" data-scroll-target="#cleaning-up-na-values">Cleaning up NA Values</a></li>
+  <li><a href="#summaries-using-unmodified-columns" id="toc-summaries-using-unmodified-columns" class="nav-link" data-scroll-target="#summaries-using-unmodified-columns">Summaries using unmodified columns</a>
+  <ul class="collapse">
+  <li><a href="#plastic-cleanup-profile-by-country-and-year" id="toc-plastic-cleanup-profile-by-country-and-year" class="nav-link" data-scroll-target="#plastic-cleanup-profile-by-country-and-year">Plastic Cleanup Profile by Country and Year</a></li>
+  <li><a href="#plastic-type-across-all-audits" id="toc-plastic-type-across-all-audits" class="nav-link" data-scroll-target="#plastic-type-across-all-audits">Plastic Type Across All Audits</a></li>
+  </ul></li>
+  <li><a href="#data-summaries-using-modiefied-columns" id="toc-data-summaries-using-modiefied-columns" class="nav-link" data-scroll-target="#data-summaries-using-modiefied-columns">Data Summaries Using Modiefied Columns</a>
+  <ul class="collapse">
+  <li><a href="#waste-per-audit-summary" id="toc-waste-per-audit-summary" class="nav-link" data-scroll-target="#waste-per-audit-summary">Waste per Audit Summary</a></li>
+  <li><a href="#proportions-of-plastics-for-each-country" id="toc-proportions-of-plastics-for-each-country" class="nav-link" data-scroll-target="#proportions-of-plastics-for-each-country">Proportions of Plastics for each Country</a></li>
+  </ul></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
@@ -2321,6 +2354,8 @@ vertical-align: -.125em;
                   NA&#39;s   :107    </code></pre>
 </div>
 </div>
+<section id="cleaning-up-na-values" class="level2">
+<h2 class="anchored" data-anchor-id="cleaning-up-na-values">Cleaning up NA Values</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plastics_clean <span class="ot">&lt;-</span> plastics <span class="sc">|&gt;</span> </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(empty<span class="sc">:</span>pvc, <span class="sc">~</span><span class="fu">replace_na</span>(., <span class="dv">0</span>)),</span>
@@ -2341,93 +2376,73 @@ vertical-align: -.125em;
 #   volunteers &lt;dbl&gt;</code></pre>
 </div>
 </div>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>plastics_clean <span class="sc">|&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">if_any</span>(empty<span class="sc">:</span>grand_total, is.na))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 14 × 15
-   country   year parent_company empty  hdpe  ldpe     o   pet    pp    ps   pvc
-   &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;          &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
- 1 Greece    2020 Pepsico            0     0     0     0     0     0     0     0
- 2 Sri Lan…  2020 British Ameri…     0     0     0     0     0     0     0     0
- 3 Sri Lan…  2020 Imperial Bran…     0     0     0     0     0     0     0     0
- 4 Sri Lan…  2020 Mars, Incorpo…     0     0     0     0     0     0     0     0
- 5 Sri Lan…  2020 Mcdonald&#39;S Co…     0     0     0     0     0     0     0     0
- 6 Sri Lan…  2020 Nestle             0     0     0     0     0     0     0     0
- 7 Sri Lan…  2020 P-E-T Active …     0     0     0     0     0     0     0     0
- 8 Sri Lan…  2020 Pepsico            0     0     0     0     0     0     0     0
- 9 Sri Lan…  2020 Perfetti Van …     0     0     0     0     0     0     0     0
-10 Sri Lan…  2020 The Coca-Cola…     0     0     0     0     0     0     0     0
-11 Sri Lan…  2020 Unilever           0     0     0     0     0     0     0     0
-12 United …  2020 Corona             0     0     0     0     0     0     0     0
-13 United …  2020 Lotus              0     0     0     0     0     0     0     0
-14 United …  2020 Rbc                0     0     0     0     0     0     0     0
-# ℹ 4 more variables: grand_total &lt;dbl&gt;, total &lt;dbl&gt;, num_events &lt;dbl&gt;,
-#   volunteers &lt;dbl&gt;</code></pre>
-</div>
-</div>
+</section>
+<section id="summaries-using-unmodified-columns" class="level2">
+<h2 class="anchored" data-anchor-id="summaries-using-unmodified-columns">Summaries using unmodified columns</h2>
 <p>Two data summaries that use existing (unmodified) columns in the data At least one of these summaries need to be produced with a custom function. At least one of these summaries need to include iteration (either inside or outside of a function).</p>
+<section id="plastic-cleanup-profile-by-country-and-year" class="level3">
+<h3 class="anchored" data-anchor-id="plastic-cleanup-profile-by-country-and-year">Plastic Cleanup Profile by Country and Year</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>country_profile <span class="ot">&lt;-</span> <span class="cf">function</span>(data, group_var1, group_var2, <span class="at">min_audits =</span> <span class="dv">10</span>) {</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  data <span class="sc">|&gt;</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(country), country <span class="sc">!=</span> <span class="st">&quot;EMPTY&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>({{ group_var1 }}, {{ group_var2 }}) <span class="sc">|&gt;</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">audits =</span> <span class="fu">n</span>(),</span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">total_pieces =</span> <span class="fu">sum</span>(total),</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">median_pieces =</span> <span class="fu">median</span>(total),</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">mean_pieces =</span> <span class="fu">mean</span>(total),</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">max_pieces =</span> <span class="fu">max</span>(total),</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(audits <span class="sc">&gt;=</span> min_audits) <span class="sc">|&gt;</span></span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>({{ group_var1 }}, {{ group_var2 }}) <span class="sc">|&gt;</span></span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tab_header</span>(</span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="fu">md</span>(</span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>        <span class="fu">paste0</span>(</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;**Table.** Plastic cleanup profile by country and year for countries with at least &quot;</span>,</span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>           min_audits,</span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot; audits.&quot;</span></span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(</span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">c</span>(audits, total_pieces, median_pieces, mean_pieces, max_pieces),</span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">decimals =</span> <span class="dv">1</span>,</span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">use_seps =</span> <span class="cn">TRUE</span></span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
-<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">country =</span> <span class="fu">md</span>(<span class="st">&quot;**Country**&quot;</span>),</span>
-<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">year =</span> <span class="fu">md</span>(<span class="st">&quot;**Year**&quot;</span>),</span>
-<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">audits =</span> <span class="fu">md</span>(<span class="st">&quot;**Audits**&quot;</span>),</span>
-<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_pieces =</span> <span class="fu">md</span>(<span class="st">&quot;**Total Pieces**&quot;</span>),</span>
-<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_pieces =</span> <span class="fu">md</span>(<span class="st">&quot;**Median Pieces**&quot;</span>),</span>
-<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_pieces =</span> <span class="fu">md</span>(<span class="st">&quot;**Mean Pieces**&quot;</span>),</span>
-<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_pieces =</span> <span class="fu">md</span>(<span class="st">&quot;**Max Pieces**&quot;</span>)</span>
-<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a><span class="fu">country_profile</span>(plastics_clean, country, year, <span class="at">min_audits =</span> <span class="dv">1</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>country_profile <span class="ot">&lt;-</span> <span class="cf">function</span>(data, group_var1, group_var2, <span class="at">min_audits =</span> <span class="dv">10</span>) {</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  data <span class="sc">|&gt;</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(country), country <span class="sc">!=</span> <span class="st">&quot;EMPTY&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>({{ group_var1 }}, {{ group_var2 }}) <span class="sc">|&gt;</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">audits =</span> <span class="fu">n</span>(),</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>      <span class="at">total_pieces =</span> <span class="fu">sum</span>(total),</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">median_pieces =</span> <span class="fu">median</span>(total),</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">mean_pieces =</span> <span class="fu">mean</span>(total),</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">max_pieces =</span> <span class="fu">max</span>(total),</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(audits <span class="sc">&gt;=</span> min_audits) <span class="sc">|&gt;</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>({{ group_var1 }}, {{ group_var2 }}) <span class="sc">|&gt;</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tab_header</span>(</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="fu">md</span>(</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>        <span class="fu">paste0</span>(</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;**Table.** Plastic cleanup profile by country and year for countries with at least &quot;</span>,</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>           min_audits,</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot; audits.&quot;</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">c</span>(audits, total_pieces, median_pieces, mean_pieces, max_pieces),</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">decimals =</span> <span class="dv">1</span>,</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">use_seps =</span> <span class="cn">TRUE</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">country =</span> <span class="fu">md</span>(<span class="st">&quot;**Country**&quot;</span>),</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">year =</span> <span class="fu">md</span>(<span class="st">&quot;**Year**&quot;</span>),</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">audits =</span> <span class="fu">md</span>(<span class="st">&quot;**Audits**&quot;</span>),</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_pieces =</span> <span class="fu">md</span>(<span class="st">&quot;**Total Pieces**&quot;</span>),</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_pieces =</span> <span class="fu">md</span>(<span class="st">&quot;**Median Pieces**&quot;</span>),</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_pieces =</span> <span class="fu">md</span>(<span class="st">&quot;**Mean Pieces**&quot;</span>),</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_pieces =</span> <span class="fu">md</span>(<span class="st">&quot;**Max Pieces**&quot;</span>)</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a><span class="fu">country_profile</span>(plastics_clean, country, year, <span class="at">min_audits =</span> <span class="dv">1</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div id="kfkfzftuwu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#kfkfzftuwu table {
+<div id="ophizqpthe" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ophizqpthe table {
 font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 }
-#kfkfzftuwu thead, #kfkfzftuwu tbody, #kfkfzftuwu tfoot, #kfkfzftuwu tr, #kfkfzftuwu td, #kfkfzftuwu th {
+#ophizqpthe thead, #ophizqpthe tbody, #ophizqpthe tfoot, #ophizqpthe tr, #ophizqpthe td, #ophizqpthe th {
 border-style: none;
 }
-#kfkfzftuwu p {
+#ophizqpthe p {
 margin: 0;
 padding: 0;
 }
-#kfkfzftuwu .gt_table {
+#ophizqpthe .gt_table {
 display: table;
 border-collapse: collapse;
 line-height: normal;
@@ -2452,11 +2467,11 @@ border-left-style: none;
 border-left-width: 2px;
 border-left-color: #D3D3D3;
 }
-#kfkfzftuwu .gt_caption {
+#ophizqpthe .gt_caption {
 padding-top: 4px;
 padding-bottom: 4px;
 }
-#kfkfzftuwu .gt_title {
+#ophizqpthe .gt_title {
 color: #333333;
 font-size: 125%;
 font-weight: initial;
@@ -2467,7 +2482,7 @@ padding-right: 5px;
 border-bottom-color: #FFFFFF;
 border-bottom-width: 0;
 }
-#kfkfzftuwu .gt_subtitle {
+#ophizqpthe .gt_subtitle {
 color: #333333;
 font-size: 85%;
 font-weight: initial;
@@ -2478,7 +2493,7 @@ padding-right: 5px;
 border-top-color: #FFFFFF;
 border-top-width: 0;
 }
-#kfkfzftuwu .gt_heading {
+#ophizqpthe .gt_heading {
 background-color: #FFFFFF;
 text-align: center;
 border-bottom-color: #FFFFFF;
@@ -2489,12 +2504,12 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#kfkfzftuwu .gt_bottom_border {
+#ophizqpthe .gt_bottom_border {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#kfkfzftuwu .gt_col_headings {
+#ophizqpthe .gt_col_headings {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -2508,7 +2523,7 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#kfkfzftuwu .gt_col_heading {
+#ophizqpthe .gt_col_heading {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -2527,7 +2542,7 @@ padding-left: 5px;
 padding-right: 5px;
 overflow-x: hidden;
 }
-#kfkfzftuwu .gt_column_spanner_outer {
+#ophizqpthe .gt_column_spanner_outer {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -2538,13 +2553,13 @@ padding-bottom: 0;
 padding-left: 4px;
 padding-right: 4px;
 }
-#kfkfzftuwu .gt_column_spanner_outer:first-child {
+#ophizqpthe .gt_column_spanner_outer:first-child {
 padding-left: 0;
 }
-#kfkfzftuwu .gt_column_spanner_outer:last-child {
+#ophizqpthe .gt_column_spanner_outer:last-child {
 padding-right: 0;
 }
-#kfkfzftuwu .gt_column_spanner {
+#ophizqpthe .gt_column_spanner {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
@@ -2555,10 +2570,10 @@ overflow-x: hidden;
 display: inline-block;
 width: 100%;
 }
-#kfkfzftuwu .gt_spanner_row {
+#ophizqpthe .gt_spanner_row {
 border-bottom-style: hidden;
 }
-#kfkfzftuwu .gt_group_heading {
+#ophizqpthe .gt_group_heading {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2583,7 +2598,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 text-align: left;
 }
-#kfkfzftuwu .gt_empty_group_heading {
+#ophizqpthe .gt_empty_group_heading {
 padding: 0.5px;
 color: #333333;
 background-color: #FFFFFF;
@@ -2597,13 +2612,13 @@ border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 vertical-align: middle;
 }
-#kfkfzftuwu .gt_from_md > :first-child {
+#ophizqpthe .gt_from_md > :first-child {
 margin-top: 0;
 }
-#kfkfzftuwu .gt_from_md > :last-child {
+#ophizqpthe .gt_from_md > :last-child {
 margin-bottom: 0;
 }
-#kfkfzftuwu .gt_row {
+#ophizqpthe .gt_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2621,7 +2636,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 overflow-x: hidden;
 }
-#kfkfzftuwu .gt_stub {
+#ophizqpthe .gt_stub {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -2633,7 +2648,7 @@ border-right-color: #D3D3D3;
 padding-left: 5px;
 padding-right: 5px;
 }
-#kfkfzftuwu .gt_stub_row_group {
+#ophizqpthe .gt_stub_row_group {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -2646,13 +2661,13 @@ padding-left: 5px;
 padding-right: 5px;
 vertical-align: top;
 }
-#kfkfzftuwu .gt_row_group_first td {
+#ophizqpthe .gt_row_group_first td {
 border-top-width: 2px;
 }
-#kfkfzftuwu .gt_row_group_first th {
+#ophizqpthe .gt_row_group_first th {
 border-top-width: 2px;
 }
-#kfkfzftuwu .gt_summary_row {
+#ophizqpthe .gt_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -2661,14 +2676,14 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#kfkfzftuwu .gt_first_summary_row {
+#ophizqpthe .gt_first_summary_row {
 border-top-style: solid;
 border-top-color: #D3D3D3;
 }
-#kfkfzftuwu .gt_first_summary_row.thick {
+#ophizqpthe .gt_first_summary_row.thick {
 border-top-width: 2px;
 }
-#kfkfzftuwu .gt_last_summary_row {
+#ophizqpthe .gt_last_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2677,7 +2692,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#kfkfzftuwu .gt_grand_summary_row {
+#ophizqpthe .gt_grand_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -2686,7 +2701,7 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#kfkfzftuwu .gt_first_grand_summary_row {
+#ophizqpthe .gt_first_grand_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2695,7 +2710,7 @@ border-top-style: double;
 border-top-width: 6px;
 border-top-color: #D3D3D3;
 }
-#kfkfzftuwu .gt_last_grand_summary_row_top {
+#ophizqpthe .gt_last_grand_summary_row_top {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -2704,10 +2719,10 @@ border-bottom-style: double;
 border-bottom-width: 6px;
 border-bottom-color: #D3D3D3;
 }
-#kfkfzftuwu .gt_striped {
+#ophizqpthe .gt_striped {
 background-color: rgba(128, 128, 128, 0.05);
 }
-#kfkfzftuwu .gt_table_body {
+#ophizqpthe .gt_table_body {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -2715,7 +2730,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#kfkfzftuwu .gt_footnotes {
+#ophizqpthe .gt_footnotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -2728,7 +2743,7 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#kfkfzftuwu .gt_footnote {
+#ophizqpthe .gt_footnote {
 margin: 0px;
 font-size: 90%;
 padding-top: 4px;
@@ -2736,7 +2751,7 @@ padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#kfkfzftuwu .gt_sourcenotes {
+#ophizqpthe .gt_sourcenotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -2749,64 +2764,64 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#kfkfzftuwu .gt_sourcenote {
+#ophizqpthe .gt_sourcenote {
 font-size: 90%;
 padding-top: 4px;
 padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#kfkfzftuwu .gt_left {
+#ophizqpthe .gt_left {
 text-align: left;
 }
-#kfkfzftuwu .gt_center {
+#ophizqpthe .gt_center {
 text-align: center;
 }
-#kfkfzftuwu .gt_right {
+#ophizqpthe .gt_right {
 text-align: right;
 font-variant-numeric: tabular-nums;
 }
-#kfkfzftuwu .gt_font_normal {
+#ophizqpthe .gt_font_normal {
 font-weight: normal;
 }
-#kfkfzftuwu .gt_font_bold {
+#ophizqpthe .gt_font_bold {
 font-weight: bold;
 }
-#kfkfzftuwu .gt_font_italic {
+#ophizqpthe .gt_font_italic {
 font-style: italic;
 }
-#kfkfzftuwu .gt_super {
+#ophizqpthe .gt_super {
 font-size: 65%;
 }
-#kfkfzftuwu .gt_footnote_marks {
+#ophizqpthe .gt_footnote_marks {
 font-size: 75%;
 vertical-align: 0.4em;
 position: initial;
 }
-#kfkfzftuwu .gt_asterisk {
+#ophizqpthe .gt_asterisk {
 font-size: 100%;
 vertical-align: 0;
 }
-#kfkfzftuwu .gt_indent_1 {
+#ophizqpthe .gt_indent_1 {
 text-indent: 5px;
 }
-#kfkfzftuwu .gt_indent_2 {
+#ophizqpthe .gt_indent_2 {
 text-indent: 10px;
 }
-#kfkfzftuwu .gt_indent_3 {
+#ophizqpthe .gt_indent_3 {
 text-indent: 15px;
 }
-#kfkfzftuwu .gt_indent_4 {
+#ophizqpthe .gt_indent_4 {
 text-indent: 20px;
 }
-#kfkfzftuwu .gt_indent_5 {
+#ophizqpthe .gt_indent_5 {
 text-indent: 25px;
 }
-#kfkfzftuwu .katex-display {
+#ophizqpthe .katex-display {
 display: inline-flex !important;
 margin-bottom: 0.75em !important;
 }
-#kfkfzftuwu div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#ophizqpthe div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
 height: 0px !important;
 }
 </style>
@@ -3787,57 +3802,60 @@ height: 0px !important;
 </div>
 </div>
 </div>
+</section>
+<section id="plastic-type-across-all-audits" class="level3">
+<h3 class="anchored" data-anchor-id="plastic-type-across-all-audits">Plastic Type Across All Audits</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>plastic_cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;hdpe&quot;</span>, <span class="st">&quot;ldpe&quot;</span>, <span class="st">&quot;o&quot;</span>, <span class="st">&quot;pet&quot;</span>, <span class="st">&quot;pp&quot;</span>, <span class="st">&quot;ps&quot;</span>, <span class="st">&quot;pvc&quot;</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">map_dfr</span>(plastic_cols, <span class="cf">function</span>(col) {</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">plastic_type =</span> col,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">total =</span> <span class="fu">sum</span>(plastics_clean[[col]]),</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(plastics_clean[[col]]),</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">median =</span> <span class="fu">median</span>(plastics_clean[[col]]),</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(plastics_clean[[col]]),</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">iqr =</span> <span class="fu">IQR</span>(plastics_clean[[col]]),</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">min =</span> <span class="fu">min</span>(plastics_clean[[col]]),</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">max =</span> <span class="fu">max</span>(plastics_clean[[col]]),</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">audits_with_plastic_type =</span> <span class="fu">sum</span>(plastics_clean[[col]] <span class="sc">&gt;</span> <span class="dv">0</span>),</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_of_audits =</span> <span class="fu">mean</span>(plastics_clean[[col]] <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>}) <span class="sc">|&gt;</span></span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_percent</span>(<span class="at">columns =</span> percent_of_audits, <span class="at">decimals =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_column_labels</span>()</span>
-<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="st">&quot;Summary statistics for each plastic type across all audits&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
-<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">plastic_type =</span> <span class="st">&quot;Plastic Type&quot;</span>,</span>
-<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">total =</span> <span class="st">&quot;Total&quot;</span>,</span>
-<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="st">&quot;Mean&quot;</span>,</span>
-<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">median =</span> <span class="st">&quot;Median&quot;</span>,</span>
-<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="st">&quot;SD&quot;</span>,</span>
-<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">iqr =</span> <span class="st">&quot;IQR&quot;</span>,</span>
-<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">min =</span> <span class="st">&quot;Min&quot;</span>,</span>
-<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">max =</span> <span class="st">&quot;Max&quot;</span>,</span>
-<span id="cb10-33"><a href="#cb10-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">audits_with_plastic_type =</span> <span class="st">&quot;Audits With Plastic Type&quot;</span>,</span>
-<span id="cb10-34"><a href="#cb10-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_of_audits =</span> <span class="st">&quot;Percent of Audits&quot;</span></span>
-<span id="cb10-35"><a href="#cb10-35" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>plastic_cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;hdpe&quot;</span>, <span class="st">&quot;ldpe&quot;</span>, <span class="st">&quot;o&quot;</span>, <span class="st">&quot;pet&quot;</span>, <span class="st">&quot;pp&quot;</span>, <span class="st">&quot;ps&quot;</span>, <span class="st">&quot;pvc&quot;</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">map_dfr</span>(plastic_cols, <span class="cf">function</span>(col) {</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">plastic_type =</span> col,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">total =</span> <span class="fu">sum</span>(plastics_clean[[col]]),</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(plastics_clean[[col]]),</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">median =</span> <span class="fu">median</span>(plastics_clean[[col]]),</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(plastics_clean[[col]]),</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">iqr =</span> <span class="fu">IQR</span>(plastics_clean[[col]]),</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">min =</span> <span class="fu">min</span>(plastics_clean[[col]]),</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">max =</span> <span class="fu">max</span>(plastics_clean[[col]]),</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">audits_with_plastic_type =</span> <span class="fu">sum</span>(plastics_clean[[col]] <span class="sc">&gt;</span> <span class="dv">0</span>),</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_of_audits =</span> <span class="fu">mean</span>(plastics_clean[[col]] <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>}) <span class="sc">|&gt;</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_percent</span>(<span class="at">columns =</span> percent_of_audits, <span class="at">decimals =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_column_labels</span>()</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="st">&quot;Summary statistics for each plastic type across all audits&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">plastic_type =</span> <span class="st">&quot;Plastic Type&quot;</span>,</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">total =</span> <span class="st">&quot;Total&quot;</span>,</span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="st">&quot;Mean&quot;</span>,</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">median =</span> <span class="st">&quot;Median&quot;</span>,</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="st">&quot;SD&quot;</span>,</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">iqr =</span> <span class="st">&quot;IQR&quot;</span>,</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">min =</span> <span class="st">&quot;Min&quot;</span>,</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">max =</span> <span class="st">&quot;Max&quot;</span>,</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">audits_with_plastic_type =</span> <span class="st">&quot;Audits With Plastic Type&quot;</span>,</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_of_audits =</span> <span class="st">&quot;Percent of Audits&quot;</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div id="gmguwsrjuw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#gmguwsrjuw table {
+<div id="ucuvuyasvk" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ucuvuyasvk table {
 font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 }
-#gmguwsrjuw thead, #gmguwsrjuw tbody, #gmguwsrjuw tfoot, #gmguwsrjuw tr, #gmguwsrjuw td, #gmguwsrjuw th {
+#ucuvuyasvk thead, #ucuvuyasvk tbody, #ucuvuyasvk tfoot, #ucuvuyasvk tr, #ucuvuyasvk td, #ucuvuyasvk th {
 border-style: none;
 }
-#gmguwsrjuw p {
+#ucuvuyasvk p {
 margin: 0;
 padding: 0;
 }
-#gmguwsrjuw .gt_table {
+#ucuvuyasvk .gt_table {
 display: table;
 border-collapse: collapse;
 line-height: normal;
@@ -3862,11 +3880,11 @@ border-left-style: none;
 border-left-width: 2px;
 border-left-color: #D3D3D3;
 }
-#gmguwsrjuw .gt_caption {
+#ucuvuyasvk .gt_caption {
 padding-top: 4px;
 padding-bottom: 4px;
 }
-#gmguwsrjuw .gt_title {
+#ucuvuyasvk .gt_title {
 color: #333333;
 font-size: 125%;
 font-weight: initial;
@@ -3877,7 +3895,7 @@ padding-right: 5px;
 border-bottom-color: #FFFFFF;
 border-bottom-width: 0;
 }
-#gmguwsrjuw .gt_subtitle {
+#ucuvuyasvk .gt_subtitle {
 color: #333333;
 font-size: 85%;
 font-weight: initial;
@@ -3888,7 +3906,7 @@ padding-right: 5px;
 border-top-color: #FFFFFF;
 border-top-width: 0;
 }
-#gmguwsrjuw .gt_heading {
+#ucuvuyasvk .gt_heading {
 background-color: #FFFFFF;
 text-align: center;
 border-bottom-color: #FFFFFF;
@@ -3899,12 +3917,12 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#gmguwsrjuw .gt_bottom_border {
+#ucuvuyasvk .gt_bottom_border {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#gmguwsrjuw .gt_col_headings {
+#ucuvuyasvk .gt_col_headings {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -3918,7 +3936,7 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#gmguwsrjuw .gt_col_heading {
+#ucuvuyasvk .gt_col_heading {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -3937,7 +3955,7 @@ padding-left: 5px;
 padding-right: 5px;
 overflow-x: hidden;
 }
-#gmguwsrjuw .gt_column_spanner_outer {
+#ucuvuyasvk .gt_column_spanner_outer {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -3948,13 +3966,13 @@ padding-bottom: 0;
 padding-left: 4px;
 padding-right: 4px;
 }
-#gmguwsrjuw .gt_column_spanner_outer:first-child {
+#ucuvuyasvk .gt_column_spanner_outer:first-child {
 padding-left: 0;
 }
-#gmguwsrjuw .gt_column_spanner_outer:last-child {
+#ucuvuyasvk .gt_column_spanner_outer:last-child {
 padding-right: 0;
 }
-#gmguwsrjuw .gt_column_spanner {
+#ucuvuyasvk .gt_column_spanner {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
@@ -3965,10 +3983,10 @@ overflow-x: hidden;
 display: inline-block;
 width: 100%;
 }
-#gmguwsrjuw .gt_spanner_row {
+#ucuvuyasvk .gt_spanner_row {
 border-bottom-style: hidden;
 }
-#gmguwsrjuw .gt_group_heading {
+#ucuvuyasvk .gt_group_heading {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -3993,7 +4011,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 text-align: left;
 }
-#gmguwsrjuw .gt_empty_group_heading {
+#ucuvuyasvk .gt_empty_group_heading {
 padding: 0.5px;
 color: #333333;
 background-color: #FFFFFF;
@@ -4007,13 +4025,13 @@ border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 vertical-align: middle;
 }
-#gmguwsrjuw .gt_from_md > :first-child {
+#ucuvuyasvk .gt_from_md > :first-child {
 margin-top: 0;
 }
-#gmguwsrjuw .gt_from_md > :last-child {
+#ucuvuyasvk .gt_from_md > :last-child {
 margin-bottom: 0;
 }
-#gmguwsrjuw .gt_row {
+#ucuvuyasvk .gt_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4031,7 +4049,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 overflow-x: hidden;
 }
-#gmguwsrjuw .gt_stub {
+#ucuvuyasvk .gt_stub {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -4043,7 +4061,7 @@ border-right-color: #D3D3D3;
 padding-left: 5px;
 padding-right: 5px;
 }
-#gmguwsrjuw .gt_stub_row_group {
+#ucuvuyasvk .gt_stub_row_group {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -4056,13 +4074,13 @@ padding-left: 5px;
 padding-right: 5px;
 vertical-align: top;
 }
-#gmguwsrjuw .gt_row_group_first td {
+#ucuvuyasvk .gt_row_group_first td {
 border-top-width: 2px;
 }
-#gmguwsrjuw .gt_row_group_first th {
+#ucuvuyasvk .gt_row_group_first th {
 border-top-width: 2px;
 }
-#gmguwsrjuw .gt_summary_row {
+#ucuvuyasvk .gt_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -4071,14 +4089,14 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#gmguwsrjuw .gt_first_summary_row {
+#ucuvuyasvk .gt_first_summary_row {
 border-top-style: solid;
 border-top-color: #D3D3D3;
 }
-#gmguwsrjuw .gt_first_summary_row.thick {
+#ucuvuyasvk .gt_first_summary_row.thick {
 border-top-width: 2px;
 }
-#gmguwsrjuw .gt_last_summary_row {
+#ucuvuyasvk .gt_last_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4087,7 +4105,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#gmguwsrjuw .gt_grand_summary_row {
+#ucuvuyasvk .gt_grand_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -4096,7 +4114,7 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#gmguwsrjuw .gt_first_grand_summary_row {
+#ucuvuyasvk .gt_first_grand_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4105,7 +4123,7 @@ border-top-style: double;
 border-top-width: 6px;
 border-top-color: #D3D3D3;
 }
-#gmguwsrjuw .gt_last_grand_summary_row_top {
+#ucuvuyasvk .gt_last_grand_summary_row_top {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4114,10 +4132,10 @@ border-bottom-style: double;
 border-bottom-width: 6px;
 border-bottom-color: #D3D3D3;
 }
-#gmguwsrjuw .gt_striped {
+#ucuvuyasvk .gt_striped {
 background-color: rgba(128, 128, 128, 0.05);
 }
-#gmguwsrjuw .gt_table_body {
+#ucuvuyasvk .gt_table_body {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -4125,7 +4143,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#gmguwsrjuw .gt_footnotes {
+#ucuvuyasvk .gt_footnotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -4138,7 +4156,7 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#gmguwsrjuw .gt_footnote {
+#ucuvuyasvk .gt_footnote {
 margin: 0px;
 font-size: 90%;
 padding-top: 4px;
@@ -4146,7 +4164,7 @@ padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#gmguwsrjuw .gt_sourcenotes {
+#ucuvuyasvk .gt_sourcenotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -4159,64 +4177,64 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#gmguwsrjuw .gt_sourcenote {
+#ucuvuyasvk .gt_sourcenote {
 font-size: 90%;
 padding-top: 4px;
 padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#gmguwsrjuw .gt_left {
+#ucuvuyasvk .gt_left {
 text-align: left;
 }
-#gmguwsrjuw .gt_center {
+#ucuvuyasvk .gt_center {
 text-align: center;
 }
-#gmguwsrjuw .gt_right {
+#ucuvuyasvk .gt_right {
 text-align: right;
 font-variant-numeric: tabular-nums;
 }
-#gmguwsrjuw .gt_font_normal {
+#ucuvuyasvk .gt_font_normal {
 font-weight: normal;
 }
-#gmguwsrjuw .gt_font_bold {
+#ucuvuyasvk .gt_font_bold {
 font-weight: bold;
 }
-#gmguwsrjuw .gt_font_italic {
+#ucuvuyasvk .gt_font_italic {
 font-style: italic;
 }
-#gmguwsrjuw .gt_super {
+#ucuvuyasvk .gt_super {
 font-size: 65%;
 }
-#gmguwsrjuw .gt_footnote_marks {
+#ucuvuyasvk .gt_footnote_marks {
 font-size: 75%;
 vertical-align: 0.4em;
 position: initial;
 }
-#gmguwsrjuw .gt_asterisk {
+#ucuvuyasvk .gt_asterisk {
 font-size: 100%;
 vertical-align: 0;
 }
-#gmguwsrjuw .gt_indent_1 {
+#ucuvuyasvk .gt_indent_1 {
 text-indent: 5px;
 }
-#gmguwsrjuw .gt_indent_2 {
+#ucuvuyasvk .gt_indent_2 {
 text-indent: 10px;
 }
-#gmguwsrjuw .gt_indent_3 {
+#ucuvuyasvk .gt_indent_3 {
 text-indent: 15px;
 }
-#gmguwsrjuw .gt_indent_4 {
+#ucuvuyasvk .gt_indent_4 {
 text-indent: 20px;
 }
-#gmguwsrjuw .gt_indent_5 {
+#ucuvuyasvk .gt_indent_5 {
 text-indent: 25px;
 }
-#gmguwsrjuw .katex-display {
+#ucuvuyasvk .katex-display {
 display: inline-flex !important;
 margin-bottom: 0.75em !important;
 }
-#gmguwsrjuw div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#ucuvuyasvk div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
 height: 0px !important;
 }
 </style>
@@ -4330,56 +4348,60 @@ height: 0px !important;
 </div>
 </div>
 </div>
+</section>
+</section>
+<section id="data-summaries-using-modiefied-columns" class="level2">
+<h2 class="anchored" data-anchor-id="data-summaries-using-modiefied-columns">Data Summaries Using Modiefied Columns</h2>
 <p>Two data summaries that modify columns from the original data At least one of these summaries need to be produced with a custom function. At least one of these summaries need to include iteration (either inside or outside of a function).</p>
-<section id="section" class="level4">
-<h4 class="anchored" data-anchor-id="section"></h4>
+<section id="waste-per-audit-summary" class="level3">
+<h3 class="anchored" data-anchor-id="waste-per-audit-summary">Waste per Audit Summary</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>rate_ify <span class="ot">&lt;-</span> <span class="cf">function</span>(df, numerator, denominator, <span class="at">name =</span> rate){</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stopifnot</span>(<span class="fu">is.data.frame</span>(df))</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">|&gt;</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>({{name}} <span class="sc">:</span><span class="er">=</span> {{numerator}}<span class="sc">/</span>{{denominator}})</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>plastics_clean <span class="sc">|&gt;</span> </span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country,year) <span class="sc">|&gt;</span> </span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_trash =</span> <span class="fu">sum</span>(total),</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">num_events =</span> <span class="fu">mean</span>(num_events),</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rate_ify</span>(<span class="at">numerator =</span> total_trash,</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>           <span class="at">denominator =</span> num_events,</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>           <span class="at">name =</span> avg_event_impact) <span class="sc">|&gt;</span> </span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;India&quot;</span>,</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;China&quot;</span>,</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;United States of America&quot;</span>,</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Indonesia&quot;</span>, </span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Nigeria&quot;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(<span class="at">columns =</span> avg_event_impact, <span class="at">drop_trailing_zeros =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(<span class="at">style =</span> <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>            <span class="at">locations =</span> <span class="fu">cells_column_labels</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_caption</span>(<span class="st">&quot;Rate of Plastic Accounted per Audit for </span></span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="st">              Highly Populated Countries&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">country =</span> <span class="st">&quot;Country&quot;</span>, </span>
-<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a>             <span class="at">year =</span> <span class="st">&quot;Year&quot;</span>,</span>
-<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a>             <span class="at">total_trash =</span> <span class="st">&quot;Total Count of Plastics&quot;</span>,</span>
-<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a>             <span class="at">num_events =</span> <span class="st">&quot;Number of Audit Events&quot;</span>,</span>
-<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a>             <span class="at">avg_event_impact =</span> <span class="st">&quot;Average Waste Accounted for per Audit&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>rate_ify <span class="ot">&lt;-</span> <span class="cf">function</span>(df, numerator, denominator, <span class="at">name =</span> rate){</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stopifnot</span>(<span class="fu">is.data.frame</span>(df))</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">|&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>({{name}} <span class="sc">:</span><span class="er">=</span> {{numerator}}<span class="sc">/</span>{{denominator}})</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>plastics_clean <span class="sc">|&gt;</span> </span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country,year) <span class="sc">|&gt;</span> </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_trash =</span> <span class="fu">sum</span>(total),</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">num_events =</span> <span class="fu">mean</span>(num_events),</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rate_ify</span>(<span class="at">numerator =</span> total_trash,</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>           <span class="at">denominator =</span> num_events,</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>           <span class="at">name =</span> avg_event_impact) <span class="sc">|&gt;</span> </span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;India&quot;</span>,</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;China&quot;</span>,</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;United States of America&quot;</span>,</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Indonesia&quot;</span>, </span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Nigeria&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(<span class="at">columns =</span> avg_event_impact, <span class="at">drop_trailing_zeros =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(<span class="at">style =</span> <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>            <span class="at">locations =</span> <span class="fu">cells_column_labels</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_caption</span>(<span class="st">&quot;Rate of Plastic Accounted per Audit for </span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="st">              Highly Populated Countries&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">country =</span> <span class="st">&quot;Country&quot;</span>, </span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>             <span class="at">year =</span> <span class="st">&quot;Year&quot;</span>,</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>             <span class="at">total_trash =</span> <span class="st">&quot;Total Count of Plastics&quot;</span>,</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>             <span class="at">num_events =</span> <span class="st">&quot;Number of Audit Events&quot;</span>,</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>             <span class="at">avg_event_impact =</span> <span class="st">&quot;Average Waste Accounted for per Audit&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div id="ppmgoaszzm" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ppmgoaszzm table {
+<div id="icnmyevcpr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#icnmyevcpr table {
 font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 }
-#ppmgoaszzm thead, #ppmgoaszzm tbody, #ppmgoaszzm tfoot, #ppmgoaszzm tr, #ppmgoaszzm td, #ppmgoaszzm th {
+#icnmyevcpr thead, #icnmyevcpr tbody, #icnmyevcpr tfoot, #icnmyevcpr tr, #icnmyevcpr td, #icnmyevcpr th {
 border-style: none;
 }
-#ppmgoaszzm p {
+#icnmyevcpr p {
 margin: 0;
 padding: 0;
 }
-#ppmgoaszzm .gt_table {
+#icnmyevcpr .gt_table {
 display: table;
 border-collapse: collapse;
 line-height: normal;
@@ -4404,11 +4426,11 @@ border-left-style: none;
 border-left-width: 2px;
 border-left-color: #D3D3D3;
 }
-#ppmgoaszzm .gt_caption {
+#icnmyevcpr .gt_caption {
 padding-top: 4px;
 padding-bottom: 4px;
 }
-#ppmgoaszzm .gt_title {
+#icnmyevcpr .gt_title {
 color: #333333;
 font-size: 125%;
 font-weight: initial;
@@ -4419,7 +4441,7 @@ padding-right: 5px;
 border-bottom-color: #FFFFFF;
 border-bottom-width: 0;
 }
-#ppmgoaszzm .gt_subtitle {
+#icnmyevcpr .gt_subtitle {
 color: #333333;
 font-size: 85%;
 font-weight: initial;
@@ -4430,7 +4452,7 @@ padding-right: 5px;
 border-top-color: #FFFFFF;
 border-top-width: 0;
 }
-#ppmgoaszzm .gt_heading {
+#icnmyevcpr .gt_heading {
 background-color: #FFFFFF;
 text-align: center;
 border-bottom-color: #FFFFFF;
@@ -4441,12 +4463,12 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#ppmgoaszzm .gt_bottom_border {
+#icnmyevcpr .gt_bottom_border {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#ppmgoaszzm .gt_col_headings {
+#icnmyevcpr .gt_col_headings {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -4460,7 +4482,7 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#ppmgoaszzm .gt_col_heading {
+#icnmyevcpr .gt_col_heading {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -4479,7 +4501,7 @@ padding-left: 5px;
 padding-right: 5px;
 overflow-x: hidden;
 }
-#ppmgoaszzm .gt_column_spanner_outer {
+#icnmyevcpr .gt_column_spanner_outer {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -4490,13 +4512,13 @@ padding-bottom: 0;
 padding-left: 4px;
 padding-right: 4px;
 }
-#ppmgoaszzm .gt_column_spanner_outer:first-child {
+#icnmyevcpr .gt_column_spanner_outer:first-child {
 padding-left: 0;
 }
-#ppmgoaszzm .gt_column_spanner_outer:last-child {
+#icnmyevcpr .gt_column_spanner_outer:last-child {
 padding-right: 0;
 }
-#ppmgoaszzm .gt_column_spanner {
+#icnmyevcpr .gt_column_spanner {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
@@ -4507,10 +4529,10 @@ overflow-x: hidden;
 display: inline-block;
 width: 100%;
 }
-#ppmgoaszzm .gt_spanner_row {
+#icnmyevcpr .gt_spanner_row {
 border-bottom-style: hidden;
 }
-#ppmgoaszzm .gt_group_heading {
+#icnmyevcpr .gt_group_heading {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4535,7 +4557,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 text-align: left;
 }
-#ppmgoaszzm .gt_empty_group_heading {
+#icnmyevcpr .gt_empty_group_heading {
 padding: 0.5px;
 color: #333333;
 background-color: #FFFFFF;
@@ -4549,13 +4571,13 @@ border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 vertical-align: middle;
 }
-#ppmgoaszzm .gt_from_md > :first-child {
+#icnmyevcpr .gt_from_md > :first-child {
 margin-top: 0;
 }
-#ppmgoaszzm .gt_from_md > :last-child {
+#icnmyevcpr .gt_from_md > :last-child {
 margin-bottom: 0;
 }
-#ppmgoaszzm .gt_row {
+#icnmyevcpr .gt_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4573,7 +4595,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 overflow-x: hidden;
 }
-#ppmgoaszzm .gt_stub {
+#icnmyevcpr .gt_stub {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -4585,7 +4607,7 @@ border-right-color: #D3D3D3;
 padding-left: 5px;
 padding-right: 5px;
 }
-#ppmgoaszzm .gt_stub_row_group {
+#icnmyevcpr .gt_stub_row_group {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -4598,13 +4620,13 @@ padding-left: 5px;
 padding-right: 5px;
 vertical-align: top;
 }
-#ppmgoaszzm .gt_row_group_first td {
+#icnmyevcpr .gt_row_group_first td {
 border-top-width: 2px;
 }
-#ppmgoaszzm .gt_row_group_first th {
+#icnmyevcpr .gt_row_group_first th {
 border-top-width: 2px;
 }
-#ppmgoaszzm .gt_summary_row {
+#icnmyevcpr .gt_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -4613,14 +4635,14 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#ppmgoaszzm .gt_first_summary_row {
+#icnmyevcpr .gt_first_summary_row {
 border-top-style: solid;
 border-top-color: #D3D3D3;
 }
-#ppmgoaszzm .gt_first_summary_row.thick {
+#icnmyevcpr .gt_first_summary_row.thick {
 border-top-width: 2px;
 }
-#ppmgoaszzm .gt_last_summary_row {
+#icnmyevcpr .gt_last_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4629,7 +4651,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#ppmgoaszzm .gt_grand_summary_row {
+#icnmyevcpr .gt_grand_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -4638,7 +4660,7 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#ppmgoaszzm .gt_first_grand_summary_row {
+#icnmyevcpr .gt_first_grand_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4647,7 +4669,7 @@ border-top-style: double;
 border-top-width: 6px;
 border-top-color: #D3D3D3;
 }
-#ppmgoaszzm .gt_last_grand_summary_row_top {
+#icnmyevcpr .gt_last_grand_summary_row_top {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -4656,10 +4678,10 @@ border-bottom-style: double;
 border-bottom-width: 6px;
 border-bottom-color: #D3D3D3;
 }
-#ppmgoaszzm .gt_striped {
+#icnmyevcpr .gt_striped {
 background-color: rgba(128, 128, 128, 0.05);
 }
-#ppmgoaszzm .gt_table_body {
+#icnmyevcpr .gt_table_body {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -4667,7 +4689,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#ppmgoaszzm .gt_footnotes {
+#icnmyevcpr .gt_footnotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -4680,7 +4702,7 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#ppmgoaszzm .gt_footnote {
+#icnmyevcpr .gt_footnote {
 margin: 0px;
 font-size: 90%;
 padding-top: 4px;
@@ -4688,7 +4710,7 @@ padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#ppmgoaszzm .gt_sourcenotes {
+#icnmyevcpr .gt_sourcenotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -4701,64 +4723,64 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#ppmgoaszzm .gt_sourcenote {
+#icnmyevcpr .gt_sourcenote {
 font-size: 90%;
 padding-top: 4px;
 padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#ppmgoaszzm .gt_left {
+#icnmyevcpr .gt_left {
 text-align: left;
 }
-#ppmgoaszzm .gt_center {
+#icnmyevcpr .gt_center {
 text-align: center;
 }
-#ppmgoaszzm .gt_right {
+#icnmyevcpr .gt_right {
 text-align: right;
 font-variant-numeric: tabular-nums;
 }
-#ppmgoaszzm .gt_font_normal {
+#icnmyevcpr .gt_font_normal {
 font-weight: normal;
 }
-#ppmgoaszzm .gt_font_bold {
+#icnmyevcpr .gt_font_bold {
 font-weight: bold;
 }
-#ppmgoaszzm .gt_font_italic {
+#icnmyevcpr .gt_font_italic {
 font-style: italic;
 }
-#ppmgoaszzm .gt_super {
+#icnmyevcpr .gt_super {
 font-size: 65%;
 }
-#ppmgoaszzm .gt_footnote_marks {
+#icnmyevcpr .gt_footnote_marks {
 font-size: 75%;
 vertical-align: 0.4em;
 position: initial;
 }
-#ppmgoaszzm .gt_asterisk {
+#icnmyevcpr .gt_asterisk {
 font-size: 100%;
 vertical-align: 0;
 }
-#ppmgoaszzm .gt_indent_1 {
+#icnmyevcpr .gt_indent_1 {
 text-indent: 5px;
 }
-#ppmgoaszzm .gt_indent_2 {
+#icnmyevcpr .gt_indent_2 {
 text-indent: 10px;
 }
-#ppmgoaszzm .gt_indent_3 {
+#icnmyevcpr .gt_indent_3 {
 text-indent: 15px;
 }
-#ppmgoaszzm .gt_indent_4 {
+#icnmyevcpr .gt_indent_4 {
 text-indent: 20px;
 }
-#ppmgoaszzm .gt_indent_5 {
+#icnmyevcpr .gt_indent_5 {
 text-indent: 25px;
 }
-#ppmgoaszzm .katex-display {
+#icnmyevcpr .katex-display {
 display: inline-flex !important;
 margin-bottom: 0.75em !important;
 }
-#ppmgoaszzm div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#icnmyevcpr div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
 height: 0px !important;
 }
 </style>
@@ -4845,56 +4867,56 @@ height: 0px !important;
 </div>
 </div>
 </section>
-<section id="proportions-of-plastics-for-each-country" class="level4">
-<h4 class="anchored" data-anchor-id="proportions-of-plastics-for-each-country">Proportions of Plastics for each Country</h4>
+<section id="proportions-of-plastics-for-each-country" class="level3">
+<h3 class="anchored" data-anchor-id="proportions-of-plastics-for-each-country">Proportions of Plastics for each Country</h3>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>proportions <span class="ot">&lt;-</span> <span class="cf">function</span>(df) {</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">|&gt;</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(country<span class="sc">:</span>pvc) <span class="sc">|&gt;</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map_if</span>(is.numeric, <span class="sc">~</span>.x <span class="sc">/</span> df<span class="sc">$</span>total) <span class="sc">|&gt;</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.data.frame</span>() </span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>plastics_clean <span class="sc">|&gt;</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">factor</span>(year)) <span class="sc">|&gt;</span></span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(country, year) <span class="sc">|&gt;</span></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="fu">across</span>(hdpe<span class="sc">:</span>total, </span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>                     <span class="sc">~</span><span class="fu">sum</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)),</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">proportions</span>() <span class="sc">|&gt;</span></span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;India&quot;</span>, <span class="st">&quot;China&quot;</span>, <span class="st">&quot;United States of America&quot;</span>, <span class="st">&quot;Indonesia&quot;</span>, <span class="st">&quot;Nigeria&quot;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_percent</span>(<span class="at">columns =</span> hdpe<span class="sc">:</span>pvc) <span class="sc">|&gt;</span></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(<span class="at">style =</span> <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_column_labels</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_caption</span>(<span class="st">&quot;Percentage of each plastic type found in audits from highly populated countries by year&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_move_to_end</span>(o) <span class="sc">|&gt;</span></span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">country =</span> <span class="st">&quot;Country&quot;</span>, </span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>             <span class="at">year =</span> <span class="st">&quot;Year&quot;</span>,</span>
-<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>             <span class="at">hdpe =</span> <span class="st">&quot;HDPE&quot;</span>,</span>
-<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>             <span class="at">ldpe =</span> <span class="st">&quot;LDPE&quot;</span>,</span>
-<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a>             <span class="at">o =</span> <span class="st">&quot;Other&quot;</span>,</span>
-<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a>             <span class="at">pet =</span> <span class="st">&quot;PET&quot;</span>,</span>
-<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>             <span class="at">pp =</span> <span class="st">&quot;PP&quot;</span>,</span>
-<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>             <span class="at">ps =</span> <span class="st">&quot;PS&quot;</span>,</span>
-<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>             <span class="at">pvc =</span> <span class="st">&quot;PVC&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>proportions <span class="ot">&lt;-</span> <span class="cf">function</span>(df) {</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">|&gt;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(country<span class="sc">:</span>pvc) <span class="sc">|&gt;</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map_if</span>(is.numeric, <span class="sc">~</span>.x <span class="sc">/</span> df<span class="sc">$</span>total) <span class="sc">|&gt;</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.data.frame</span>() </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>plastics_clean <span class="sc">|&gt;</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">factor</span>(year)) <span class="sc">|&gt;</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(country, year) <span class="sc">|&gt;</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="fu">across</span>(hdpe<span class="sc">:</span>total, </span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>                     <span class="sc">~</span><span class="fu">sum</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>              <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">proportions</span>() <span class="sc">|&gt;</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;India&quot;</span>, <span class="st">&quot;China&quot;</span>, <span class="st">&quot;United States of America&quot;</span>, <span class="st">&quot;Indonesia&quot;</span>, <span class="st">&quot;Nigeria&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_percent</span>(<span class="at">columns =</span> hdpe<span class="sc">:</span>pvc) <span class="sc">|&gt;</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(<span class="at">style =</span> <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_column_labels</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_caption</span>(<span class="st">&quot;Percentage of each plastic type found in audits from highly populated countries by year&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_move_to_end</span>(o) <span class="sc">|&gt;</span></span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">country =</span> <span class="st">&quot;Country&quot;</span>, </span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>             <span class="at">year =</span> <span class="st">&quot;Year&quot;</span>,</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>             <span class="at">hdpe =</span> <span class="st">&quot;HDPE&quot;</span>,</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>             <span class="at">ldpe =</span> <span class="st">&quot;LDPE&quot;</span>,</span>
+<span id="cb10-28"><a href="#cb10-28" aria-hidden="true" tabindex="-1"></a>             <span class="at">o =</span> <span class="st">&quot;Other&quot;</span>,</span>
+<span id="cb10-29"><a href="#cb10-29" aria-hidden="true" tabindex="-1"></a>             <span class="at">pet =</span> <span class="st">&quot;PET&quot;</span>,</span>
+<span id="cb10-30"><a href="#cb10-30" aria-hidden="true" tabindex="-1"></a>             <span class="at">pp =</span> <span class="st">&quot;PP&quot;</span>,</span>
+<span id="cb10-31"><a href="#cb10-31" aria-hidden="true" tabindex="-1"></a>             <span class="at">ps =</span> <span class="st">&quot;PS&quot;</span>,</span>
+<span id="cb10-32"><a href="#cb10-32" aria-hidden="true" tabindex="-1"></a>             <span class="at">pvc =</span> <span class="st">&quot;PVC&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
-<div id="ecjzzrzsfh" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#ecjzzrzsfh table {
+<div id="fjkzjbdpzd" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#fjkzjbdpzd table {
 font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 -webkit-font-smoothing: antialiased;
 -moz-osx-font-smoothing: grayscale;
 }
-#ecjzzrzsfh thead, #ecjzzrzsfh tbody, #ecjzzrzsfh tfoot, #ecjzzrzsfh tr, #ecjzzrzsfh td, #ecjzzrzsfh th {
+#fjkzjbdpzd thead, #fjkzjbdpzd tbody, #fjkzjbdpzd tfoot, #fjkzjbdpzd tr, #fjkzjbdpzd td, #fjkzjbdpzd th {
 border-style: none;
 }
-#ecjzzrzsfh p {
+#fjkzjbdpzd p {
 margin: 0;
 padding: 0;
 }
-#ecjzzrzsfh .gt_table {
+#fjkzjbdpzd .gt_table {
 display: table;
 border-collapse: collapse;
 line-height: normal;
@@ -4919,11 +4941,11 @@ border-left-style: none;
 border-left-width: 2px;
 border-left-color: #D3D3D3;
 }
-#ecjzzrzsfh .gt_caption {
+#fjkzjbdpzd .gt_caption {
 padding-top: 4px;
 padding-bottom: 4px;
 }
-#ecjzzrzsfh .gt_title {
+#fjkzjbdpzd .gt_title {
 color: #333333;
 font-size: 125%;
 font-weight: initial;
@@ -4934,7 +4956,7 @@ padding-right: 5px;
 border-bottom-color: #FFFFFF;
 border-bottom-width: 0;
 }
-#ecjzzrzsfh .gt_subtitle {
+#fjkzjbdpzd .gt_subtitle {
 color: #333333;
 font-size: 85%;
 font-weight: initial;
@@ -4945,7 +4967,7 @@ padding-right: 5px;
 border-top-color: #FFFFFF;
 border-top-width: 0;
 }
-#ecjzzrzsfh .gt_heading {
+#fjkzjbdpzd .gt_heading {
 background-color: #FFFFFF;
 text-align: center;
 border-bottom-color: #FFFFFF;
@@ -4956,12 +4978,12 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#ecjzzrzsfh .gt_bottom_border {
+#fjkzjbdpzd .gt_bottom_border {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#ecjzzrzsfh .gt_col_headings {
+#fjkzjbdpzd .gt_col_headings {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -4975,7 +4997,7 @@ border-right-style: none;
 border-right-width: 1px;
 border-right-color: #D3D3D3;
 }
-#ecjzzrzsfh .gt_col_heading {
+#fjkzjbdpzd .gt_col_heading {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -4994,7 +5016,7 @@ padding-left: 5px;
 padding-right: 5px;
 overflow-x: hidden;
 }
-#ecjzzrzsfh .gt_column_spanner_outer {
+#fjkzjbdpzd .gt_column_spanner_outer {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -5005,13 +5027,13 @@ padding-bottom: 0;
 padding-left: 4px;
 padding-right: 4px;
 }
-#ecjzzrzsfh .gt_column_spanner_outer:first-child {
+#fjkzjbdpzd .gt_column_spanner_outer:first-child {
 padding-left: 0;
 }
-#ecjzzrzsfh .gt_column_spanner_outer:last-child {
+#fjkzjbdpzd .gt_column_spanner_outer:last-child {
 padding-right: 0;
 }
-#ecjzzrzsfh .gt_column_spanner {
+#fjkzjbdpzd .gt_column_spanner {
 border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
@@ -5022,10 +5044,10 @@ overflow-x: hidden;
 display: inline-block;
 width: 100%;
 }
-#ecjzzrzsfh .gt_spanner_row {
+#fjkzjbdpzd .gt_spanner_row {
 border-bottom-style: hidden;
 }
-#ecjzzrzsfh .gt_group_heading {
+#fjkzjbdpzd .gt_group_heading {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -5050,7 +5072,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 text-align: left;
 }
-#ecjzzrzsfh .gt_empty_group_heading {
+#fjkzjbdpzd .gt_empty_group_heading {
 padding: 0.5px;
 color: #333333;
 background-color: #FFFFFF;
@@ -5064,13 +5086,13 @@ border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 vertical-align: middle;
 }
-#ecjzzrzsfh .gt_from_md > :first-child {
+#fjkzjbdpzd .gt_from_md > :first-child {
 margin-top: 0;
 }
-#ecjzzrzsfh .gt_from_md > :last-child {
+#fjkzjbdpzd .gt_from_md > :last-child {
 margin-bottom: 0;
 }
-#ecjzzrzsfh .gt_row {
+#fjkzjbdpzd .gt_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -5088,7 +5110,7 @@ border-right-color: #D3D3D3;
 vertical-align: middle;
 overflow-x: hidden;
 }
-#ecjzzrzsfh .gt_stub {
+#fjkzjbdpzd .gt_stub {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -5100,7 +5122,7 @@ border-right-color: #D3D3D3;
 padding-left: 5px;
 padding-right: 5px;
 }
-#ecjzzrzsfh .gt_stub_row_group {
+#fjkzjbdpzd .gt_stub_row_group {
 color: #333333;
 background-color: #FFFFFF;
 font-size: 100%;
@@ -5113,13 +5135,13 @@ padding-left: 5px;
 padding-right: 5px;
 vertical-align: top;
 }
-#ecjzzrzsfh .gt_row_group_first td {
+#fjkzjbdpzd .gt_row_group_first td {
 border-top-width: 2px;
 }
-#ecjzzrzsfh .gt_row_group_first th {
+#fjkzjbdpzd .gt_row_group_first th {
 border-top-width: 2px;
 }
-#ecjzzrzsfh .gt_summary_row {
+#fjkzjbdpzd .gt_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -5128,14 +5150,14 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#ecjzzrzsfh .gt_first_summary_row {
+#fjkzjbdpzd .gt_first_summary_row {
 border-top-style: solid;
 border-top-color: #D3D3D3;
 }
-#ecjzzrzsfh .gt_first_summary_row.thick {
+#fjkzjbdpzd .gt_first_summary_row.thick {
 border-top-width: 2px;
 }
-#ecjzzrzsfh .gt_last_summary_row {
+#fjkzjbdpzd .gt_last_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -5144,7 +5166,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#ecjzzrzsfh .gt_grand_summary_row {
+#fjkzjbdpzd .gt_grand_summary_row {
 color: #333333;
 background-color: #FFFFFF;
 text-transform: inherit;
@@ -5153,7 +5175,7 @@ padding-bottom: 8px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#ecjzzrzsfh .gt_first_grand_summary_row {
+#fjkzjbdpzd .gt_first_grand_summary_row {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -5162,7 +5184,7 @@ border-top-style: double;
 border-top-width: 6px;
 border-top-color: #D3D3D3;
 }
-#ecjzzrzsfh .gt_last_grand_summary_row_top {
+#fjkzjbdpzd .gt_last_grand_summary_row_top {
 padding-top: 8px;
 padding-bottom: 8px;
 padding-left: 5px;
@@ -5171,10 +5193,10 @@ border-bottom-style: double;
 border-bottom-width: 6px;
 border-bottom-color: #D3D3D3;
 }
-#ecjzzrzsfh .gt_striped {
+#fjkzjbdpzd .gt_striped {
 background-color: rgba(128, 128, 128, 0.05);
 }
-#ecjzzrzsfh .gt_table_body {
+#fjkzjbdpzd .gt_table_body {
 border-top-style: solid;
 border-top-width: 2px;
 border-top-color: #D3D3D3;
@@ -5182,7 +5204,7 @@ border-bottom-style: solid;
 border-bottom-width: 2px;
 border-bottom-color: #D3D3D3;
 }
-#ecjzzrzsfh .gt_footnotes {
+#fjkzjbdpzd .gt_footnotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -5195,7 +5217,7 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#ecjzzrzsfh .gt_footnote {
+#fjkzjbdpzd .gt_footnote {
 margin: 0px;
 font-size: 90%;
 padding-top: 4px;
@@ -5203,7 +5225,7 @@ padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#ecjzzrzsfh .gt_sourcenotes {
+#fjkzjbdpzd .gt_sourcenotes {
 color: #333333;
 background-color: #FFFFFF;
 border-bottom-style: none;
@@ -5216,64 +5238,64 @@ border-right-style: none;
 border-right-width: 2px;
 border-right-color: #D3D3D3;
 }
-#ecjzzrzsfh .gt_sourcenote {
+#fjkzjbdpzd .gt_sourcenote {
 font-size: 90%;
 padding-top: 4px;
 padding-bottom: 4px;
 padding-left: 5px;
 padding-right: 5px;
 }
-#ecjzzrzsfh .gt_left {
+#fjkzjbdpzd .gt_left {
 text-align: left;
 }
-#ecjzzrzsfh .gt_center {
+#fjkzjbdpzd .gt_center {
 text-align: center;
 }
-#ecjzzrzsfh .gt_right {
+#fjkzjbdpzd .gt_right {
 text-align: right;
 font-variant-numeric: tabular-nums;
 }
-#ecjzzrzsfh .gt_font_normal {
+#fjkzjbdpzd .gt_font_normal {
 font-weight: normal;
 }
-#ecjzzrzsfh .gt_font_bold {
+#fjkzjbdpzd .gt_font_bold {
 font-weight: bold;
 }
-#ecjzzrzsfh .gt_font_italic {
+#fjkzjbdpzd .gt_font_italic {
 font-style: italic;
 }
-#ecjzzrzsfh .gt_super {
+#fjkzjbdpzd .gt_super {
 font-size: 65%;
 }
-#ecjzzrzsfh .gt_footnote_marks {
+#fjkzjbdpzd .gt_footnote_marks {
 font-size: 75%;
 vertical-align: 0.4em;
 position: initial;
 }
-#ecjzzrzsfh .gt_asterisk {
+#fjkzjbdpzd .gt_asterisk {
 font-size: 100%;
 vertical-align: 0;
 }
-#ecjzzrzsfh .gt_indent_1 {
+#fjkzjbdpzd .gt_indent_1 {
 text-indent: 5px;
 }
-#ecjzzrzsfh .gt_indent_2 {
+#fjkzjbdpzd .gt_indent_2 {
 text-indent: 10px;
 }
-#ecjzzrzsfh .gt_indent_3 {
+#fjkzjbdpzd .gt_indent_3 {
 text-indent: 15px;
 }
-#ecjzzrzsfh .gt_indent_4 {
+#fjkzjbdpzd .gt_indent_4 {
 text-indent: 20px;
 }
-#ecjzzrzsfh .gt_indent_5 {
+#fjkzjbdpzd .gt_indent_5 {
 text-indent: 25px;
 }
-#ecjzzrzsfh .katex-display {
+#fjkzjbdpzd .katex-display {
 display: inline-flex !important;
 margin-bottom: 0.75em !important;
 }
-#ecjzzrzsfh div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#fjkzjbdpzd div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
 height: 0px !important;
 }
 </style>
@@ -5402,6 +5424,7 @@ height: 0px !important;
 <p>Stat 541 only: Summary tables must at a minimum have: Formatted values (e.g., decimals, percentages, currencies) Boldface headers Captions</p>
 <!-- -->
 
+</section>
 </section>
 </section>
 
@@ -5858,255 +5881,261 @@ height: 0px !important;
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> &quot;Project -  report&quot;</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> &quot;Jonathan Flores Martinez&quot;</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> &quot;3 April 2026&quot;</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> html</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="an">editor:</span><span class="co"> source</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="an">embed-resources:</span><span class="co"> true</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span><span class="co"> </span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: true</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="an">code-tools:</span><span class="co"> true</span></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="fu"># Environmental Plastic</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="fu"># Check in 1: Exploring the data and Generating Research Questions</span></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a><span class="fu">## Context of the Data</span></span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>This was a data frame with information on plastic pollution. It was originally collected by the Break Free From Plastic (BFFP) group. They are an environmental activist with an interest in reducing the amount of plastic waste in the world. They focus on reducing the use of single use plastics and other actions across the entire life cycle of plastics. They believe that the best way to address plastic pollution comes from prevention over treating the effects of pollution. The data is two years (2019 and 2020) worth of data collected through global audits that BFFP does trying to understand the sources of plastic waste creation. The information provided by the data set is the country, parent company which created the plastic waste, the number of clean up events and volunteers, and the counts of plastic waste. This was unit-less so I am assuming individual plastic pieces collected at the event. There was a grand total count and multiple columns representing the different types of plastics ranging from the thin material of bags to PVC pipe plastic. Each row seems to represent a country and company combination. There are over 10,000 rows of data.</span>
-<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cleaning Already Performed on Data</span></span>
-<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>This data was originally found in multiple folders one each for the years 2019 and 2020. Each folder then had a separate csv file for each country. jonthegeek used map_dfr to combine all the csv files into a single data frame. This function also changed the data types. All were turned into doubles as they were numbers except for the country and parent company as these were characters. He then added a year column as the ideas was to eventually combine the two years together. After cleaning up the names with janitor he did the same thing to the 2020 data. This one had some duplicate columns so he used an if_else function to take care of that. Finally the two years were bound together and some names were changed to make it easier to work with and we now have the data set we will be using.</span>
-<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Possible Research Questions</span></span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a><span class="fu">### Assessed using the data</span></span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>We could ask if there was a change in the generation of plastic waste from one year to another. This can be looked at both by country and by parent company. We can see in what direction progress is going by looking at this data</span>
-<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>We could look at the number of counting events and volunteers across the countries. This, along with the waste information can help us look at the impact of volunteer work. Maybe the difference in plastic waste could be correlated to the amount of volunteers and events dedicated to clean up.</span>
-<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a><span class="fu">### Assessed using supplemental data</span></span>
-<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>We could ask if the type of plastic being used in the country depends on how developed the country is. Maybe some plastic is cheaper to produce and used in higher proportions in countries with less money. This matters because some plastics may be more harmful to the environment and keeping track of it would be important</span>
-<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>We could explore the amount of waste created by companies and see if they have environmentally friendly production practices and see if that makes a difference. This could help determine the impact that said practices and policies have on the creation of plastic pollution</span>
-<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a><span class="fu">## Possible Visualizations</span></span>
-<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a><span class="al">![](images/clipboard-1100353581.png)</span></span>
-<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>The dot&#39;s size could also be different sizes depending on how many companies are producing plastic waste in it.</span>
-<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a><span class="al">![](images/clipboard-2837951265.png)</span></span>
-<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
-<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-55"><a href="#cb13-55" aria-hidden="true" tabindex="-1"></a>plastics <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2021/2021-01-26/plastics.csv&#39;</span>)</span>
-<span id="cb13-56"><a href="#cb13-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-57"><a href="#cb13-57" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-58"><a href="#cb13-58" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-59"><a href="#cb13-59" aria-hidden="true" tabindex="-1"></a><span class="fu"># Check in 2: Initial Data Manipulation Functions</span></span>
-<span id="cb13-60"><a href="#cb13-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-63"><a href="#cb13-63" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb13-64"><a href="#cb13-64" aria-hidden="true" tabindex="-1"></a>plastics <span class="sc">|&gt;</span> </span>
-<span id="cb13-65"><a href="#cb13-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span>
-<span id="cb13-66"><a href="#cb13-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-67"><a href="#cb13-67" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-68"><a href="#cb13-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-71"><a href="#cb13-71" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb13-72"><a href="#cb13-72" aria-hidden="true" tabindex="-1"></a>plastics_clean <span class="ot">&lt;-</span> plastics <span class="sc">|&gt;</span> </span>
-<span id="cb13-73"><a href="#cb13-73" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(empty<span class="sc">:</span>pvc, <span class="sc">~</span><span class="fu">replace_na</span>(., <span class="dv">0</span>)),</span>
-<span id="cb13-74"><a href="#cb13-74" aria-hidden="true" tabindex="-1"></a>         <span class="at">total =</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(<span class="fu">c</span>(empty<span class="sc">:</span>pvc))),</span>
-<span id="cb13-75"><a href="#cb13-75" aria-hidden="true" tabindex="-1"></a>         <span class="at">.before =</span> num_events)</span>
-<span id="cb13-76"><a href="#cb13-76" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-77"><a href="#cb13-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-78"><a href="#cb13-78" aria-hidden="true" tabindex="-1"></a>To address the NA values present in our data our group decided to turn any NA within the plastic type columns into a zero. The rationale being that when being filled out if there were no counts of a certain type some would input a 0 and others would leave the cell empty on a spreadsheet. To address NAs in the grand totals we summed the counts of the different type of plastics and found that only two discrepancies were found shown below.</span>
-<span id="cb13-79"><a href="#cb13-79" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-82"><a href="#cb13-82" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb13-83"><a href="#cb13-83" aria-hidden="true" tabindex="-1"></a>plastics_clean<span class="sc">|&gt;</span> </span>
-<span id="cb13-84"><a href="#cb13-84" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(grand_total <span class="sc">!=</span> total)</span>
-<span id="cb13-85"><a href="#cb13-85" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-86"><a href="#cb13-86" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-89"><a href="#cb13-89" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb13-90"><a href="#cb13-90" aria-hidden="true" tabindex="-1"></a>plastics_clean <span class="sc">|&gt;</span></span>
-<span id="cb13-91"><a href="#cb13-91" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">if_any</span>(empty<span class="sc">:</span>grand_total, is.na))</span>
-<span id="cb13-92"><a href="#cb13-92" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-93"><a href="#cb13-93" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-94"><a href="#cb13-94" aria-hidden="true" tabindex="-1"></a>Two data summaries that use existing (unmodified) columns in the data At least one of these summaries need to be produced with a custom function. At least one of these summaries need to include iteration (either inside or outside of a function).</span>
-<span id="cb13-95"><a href="#cb13-95" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-98"><a href="#cb13-98" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb13-99"><a href="#cb13-99" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb13-100"><a href="#cb13-100" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
-<span id="cb13-101"><a href="#cb13-101" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-102"><a href="#cb13-102" aria-hidden="true" tabindex="-1"></a>country_profile <span class="ot">&lt;-</span> <span class="cf">function</span>(data, group_var1, group_var2, <span class="at">min_audits =</span> <span class="dv">10</span>) {</span>
-<span id="cb13-103"><a href="#cb13-103" aria-hidden="true" tabindex="-1"></a>  data <span class="sc">|&gt;</span></span>
-<span id="cb13-104"><a href="#cb13-104" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(country), country <span class="sc">!=</span> <span class="st">&quot;EMPTY&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb13-105"><a href="#cb13-105" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>({{ group_var1 }}, {{ group_var2 }}) <span class="sc">|&gt;</span></span>
-<span id="cb13-106"><a href="#cb13-106" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(</span>
-<span id="cb13-107"><a href="#cb13-107" aria-hidden="true" tabindex="-1"></a>      <span class="at">audits =</span> <span class="fu">n</span>(),</span>
-<span id="cb13-108"><a href="#cb13-108" aria-hidden="true" tabindex="-1"></a>      <span class="at">total_pieces =</span> <span class="fu">sum</span>(total),</span>
-<span id="cb13-109"><a href="#cb13-109" aria-hidden="true" tabindex="-1"></a>      <span class="at">median_pieces =</span> <span class="fu">median</span>(total),</span>
-<span id="cb13-110"><a href="#cb13-110" aria-hidden="true" tabindex="-1"></a>      <span class="at">mean_pieces =</span> <span class="fu">mean</span>(total),</span>
-<span id="cb13-111"><a href="#cb13-111" aria-hidden="true" tabindex="-1"></a>      <span class="at">max_pieces =</span> <span class="fu">max</span>(total),</span>
-<span id="cb13-112"><a href="#cb13-112" aria-hidden="true" tabindex="-1"></a>      <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span></span>
-<span id="cb13-113"><a href="#cb13-113" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
-<span id="cb13-114"><a href="#cb13-114" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(audits <span class="sc">&gt;=</span> min_audits) <span class="sc">|&gt;</span></span>
-<span id="cb13-115"><a href="#cb13-115" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>({{ group_var1 }}, {{ group_var2 }}) <span class="sc">|&gt;</span></span>
-<span id="cb13-116"><a href="#cb13-116" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
-<span id="cb13-117"><a href="#cb13-117" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tab_header</span>(</span>
-<span id="cb13-118"><a href="#cb13-118" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="fu">md</span>(</span>
-<span id="cb13-119"><a href="#cb13-119" aria-hidden="true" tabindex="-1"></a>        <span class="fu">paste0</span>(</span>
-<span id="cb13-120"><a href="#cb13-120" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;**Table.** Plastic cleanup profile by country and year for countries with at least &quot;</span>,</span>
-<span id="cb13-121"><a href="#cb13-121" aria-hidden="true" tabindex="-1"></a>           min_audits,</span>
-<span id="cb13-122"><a href="#cb13-122" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot; audits.&quot;</span></span>
-<span id="cb13-123"><a href="#cb13-123" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb13-124"><a href="#cb13-124" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb13-125"><a href="#cb13-125" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb13-126"><a href="#cb13-126" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(</span>
-<span id="cb13-127"><a href="#cb13-127" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">c</span>(audits, total_pieces, median_pieces, mean_pieces, max_pieces),</span>
-<span id="cb13-128"><a href="#cb13-128" aria-hidden="true" tabindex="-1"></a>    <span class="at">decimals =</span> <span class="dv">1</span>,</span>
-<span id="cb13-129"><a href="#cb13-129" aria-hidden="true" tabindex="-1"></a>    <span class="at">use_seps =</span> <span class="cn">TRUE</span></span>
-<span id="cb13-130"><a href="#cb13-130" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb13-131"><a href="#cb13-131" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
-<span id="cb13-132"><a href="#cb13-132" aria-hidden="true" tabindex="-1"></a>    <span class="at">country =</span> <span class="fu">md</span>(<span class="st">&quot;**Country**&quot;</span>),</span>
-<span id="cb13-133"><a href="#cb13-133" aria-hidden="true" tabindex="-1"></a>    <span class="at">year =</span> <span class="fu">md</span>(<span class="st">&quot;**Year**&quot;</span>),</span>
-<span id="cb13-134"><a href="#cb13-134" aria-hidden="true" tabindex="-1"></a>    <span class="at">audits =</span> <span class="fu">md</span>(<span class="st">&quot;**Audits**&quot;</span>),</span>
-<span id="cb13-135"><a href="#cb13-135" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_pieces =</span> <span class="fu">md</span>(<span class="st">&quot;**Total Pieces**&quot;</span>),</span>
-<span id="cb13-136"><a href="#cb13-136" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_pieces =</span> <span class="fu">md</span>(<span class="st">&quot;**Median Pieces**&quot;</span>),</span>
-<span id="cb13-137"><a href="#cb13-137" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_pieces =</span> <span class="fu">md</span>(<span class="st">&quot;**Mean Pieces**&quot;</span>),</span>
-<span id="cb13-138"><a href="#cb13-138" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_pieces =</span> <span class="fu">md</span>(<span class="st">&quot;**Max Pieces**&quot;</span>)</span>
-<span id="cb13-139"><a href="#cb13-139" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb13-140"><a href="#cb13-140" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb13-141"><a href="#cb13-141" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-142"><a href="#cb13-142" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-143"><a href="#cb13-143" aria-hidden="true" tabindex="-1"></a><span class="fu">country_profile</span>(plastics_clean, country, year, <span class="at">min_audits =</span> <span class="dv">1</span>) </span>
-<span id="cb13-144"><a href="#cb13-144" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-145"><a href="#cb13-145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-148"><a href="#cb13-148" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb13-149"><a href="#cb13-149" aria-hidden="true" tabindex="-1"></a>plastic_cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;hdpe&quot;</span>, <span class="st">&quot;ldpe&quot;</span>, <span class="st">&quot;o&quot;</span>, <span class="st">&quot;pet&quot;</span>, <span class="st">&quot;pp&quot;</span>, <span class="st">&quot;ps&quot;</span>, <span class="st">&quot;pvc&quot;</span>)</span>
-<span id="cb13-150"><a href="#cb13-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-151"><a href="#cb13-151" aria-hidden="true" tabindex="-1"></a><span class="fu">map_dfr</span>(plastic_cols, <span class="cf">function</span>(col) {</span>
-<span id="cb13-152"><a href="#cb13-152" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
-<span id="cb13-153"><a href="#cb13-153" aria-hidden="true" tabindex="-1"></a>    <span class="at">plastic_type =</span> col,</span>
-<span id="cb13-154"><a href="#cb13-154" aria-hidden="true" tabindex="-1"></a>    <span class="at">total =</span> <span class="fu">sum</span>(plastics_clean[[col]]),</span>
-<span id="cb13-155"><a href="#cb13-155" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(plastics_clean[[col]]),</span>
-<span id="cb13-156"><a href="#cb13-156" aria-hidden="true" tabindex="-1"></a>    <span class="at">median =</span> <span class="fu">median</span>(plastics_clean[[col]]),</span>
-<span id="cb13-157"><a href="#cb13-157" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(plastics_clean[[col]]),</span>
-<span id="cb13-158"><a href="#cb13-158" aria-hidden="true" tabindex="-1"></a>    <span class="at">iqr =</span> <span class="fu">IQR</span>(plastics_clean[[col]]),</span>
-<span id="cb13-159"><a href="#cb13-159" aria-hidden="true" tabindex="-1"></a>    <span class="at">min =</span> <span class="fu">min</span>(plastics_clean[[col]]),</span>
-<span id="cb13-160"><a href="#cb13-160" aria-hidden="true" tabindex="-1"></a>    <span class="at">max =</span> <span class="fu">max</span>(plastics_clean[[col]]),</span>
-<span id="cb13-161"><a href="#cb13-161" aria-hidden="true" tabindex="-1"></a>    <span class="at">audits_with_plastic_type =</span> <span class="fu">sum</span>(plastics_clean[[col]] <span class="sc">&gt;</span> <span class="dv">0</span>),</span>
-<span id="cb13-162"><a href="#cb13-162" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_of_audits =</span> <span class="fu">mean</span>(plastics_clean[[col]] <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb13-163"><a href="#cb13-163" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb13-164"><a href="#cb13-164" aria-hidden="true" tabindex="-1"></a>}) <span class="sc">|&gt;</span></span>
-<span id="cb13-165"><a href="#cb13-165" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
-<span id="cb13-166"><a href="#cb13-166" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_percent</span>(<span class="at">columns =</span> percent_of_audits, <span class="at">decimals =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
-<span id="cb13-167"><a href="#cb13-167" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
-<span id="cb13-168"><a href="#cb13-168" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb13-169"><a href="#cb13-169" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_column_labels</span>()</span>
-<span id="cb13-170"><a href="#cb13-170" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
-<span id="cb13-171"><a href="#cb13-171" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="st">&quot;Summary statistics for each plastic type across all audits&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb13-172"><a href="#cb13-172" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
-<span id="cb13-173"><a href="#cb13-173" aria-hidden="true" tabindex="-1"></a>    <span class="at">plastic_type =</span> <span class="st">&quot;Plastic Type&quot;</span>,</span>
-<span id="cb13-174"><a href="#cb13-174" aria-hidden="true" tabindex="-1"></a>    <span class="at">total =</span> <span class="st">&quot;Total&quot;</span>,</span>
-<span id="cb13-175"><a href="#cb13-175" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="st">&quot;Mean&quot;</span>,</span>
-<span id="cb13-176"><a href="#cb13-176" aria-hidden="true" tabindex="-1"></a>    <span class="at">median =</span> <span class="st">&quot;Median&quot;</span>,</span>
-<span id="cb13-177"><a href="#cb13-177" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="st">&quot;SD&quot;</span>,</span>
-<span id="cb13-178"><a href="#cb13-178" aria-hidden="true" tabindex="-1"></a>    <span class="at">iqr =</span> <span class="st">&quot;IQR&quot;</span>,</span>
-<span id="cb13-179"><a href="#cb13-179" aria-hidden="true" tabindex="-1"></a>    <span class="at">min =</span> <span class="st">&quot;Min&quot;</span>,</span>
-<span id="cb13-180"><a href="#cb13-180" aria-hidden="true" tabindex="-1"></a>    <span class="at">max =</span> <span class="st">&quot;Max&quot;</span>,</span>
-<span id="cb13-181"><a href="#cb13-181" aria-hidden="true" tabindex="-1"></a>    <span class="at">audits_with_plastic_type =</span> <span class="st">&quot;Audits With Plastic Type&quot;</span>,</span>
-<span id="cb13-182"><a href="#cb13-182" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_of_audits =</span> <span class="st">&quot;Percent of Audits&quot;</span></span>
-<span id="cb13-183"><a href="#cb13-183" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb13-184"><a href="#cb13-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-185"><a href="#cb13-185" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-186"><a href="#cb13-186" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-187"><a href="#cb13-187" aria-hidden="true" tabindex="-1"></a>Two data summaries that modify columns from the original data At least one of these summaries need to be produced with a custom function. At least one of these summaries need to include iteration (either inside or outside of a function).</span>
-<span id="cb13-188"><a href="#cb13-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-189"><a href="#cb13-189" aria-hidden="true" tabindex="-1"></a><span class="fu">#### </span></span>
-<span id="cb13-190"><a href="#cb13-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-193"><a href="#cb13-193" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb13-194"><a href="#cb13-194" aria-hidden="true" tabindex="-1"></a>rate_ify <span class="ot">&lt;-</span> <span class="cf">function</span>(df, numerator, denominator, <span class="at">name =</span> rate){</span>
-<span id="cb13-195"><a href="#cb13-195" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stopifnot</span>(<span class="fu">is.data.frame</span>(df))</span>
-<span id="cb13-196"><a href="#cb13-196" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">|&gt;</span></span>
-<span id="cb13-197"><a href="#cb13-197" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>({{name}} <span class="sc">:</span><span class="er">=</span> {{numerator}}<span class="sc">/</span>{{denominator}})</span>
-<span id="cb13-198"><a href="#cb13-198" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb13-199"><a href="#cb13-199" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-200"><a href="#cb13-200" aria-hidden="true" tabindex="-1"></a>plastics_clean <span class="sc">|&gt;</span> </span>
-<span id="cb13-201"><a href="#cb13-201" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country,year) <span class="sc">|&gt;</span> </span>
-<span id="cb13-202"><a href="#cb13-202" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_trash =</span> <span class="fu">sum</span>(total),</span>
-<span id="cb13-203"><a href="#cb13-203" aria-hidden="true" tabindex="-1"></a>            <span class="at">num_events =</span> <span class="fu">mean</span>(num_events),</span>
-<span id="cb13-204"><a href="#cb13-204" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb13-205"><a href="#cb13-205" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rate_ify</span>(<span class="at">numerator =</span> total_trash,</span>
-<span id="cb13-206"><a href="#cb13-206" aria-hidden="true" tabindex="-1"></a>           <span class="at">denominator =</span> num_events,</span>
-<span id="cb13-207"><a href="#cb13-207" aria-hidden="true" tabindex="-1"></a>           <span class="at">name =</span> avg_event_impact) <span class="sc">|&gt;</span> </span>
-<span id="cb13-208"><a href="#cb13-208" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;India&quot;</span>,</span>
-<span id="cb13-209"><a href="#cb13-209" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;China&quot;</span>,</span>
-<span id="cb13-210"><a href="#cb13-210" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;United States of America&quot;</span>,</span>
-<span id="cb13-211"><a href="#cb13-211" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Indonesia&quot;</span>, </span>
-<span id="cb13-212"><a href="#cb13-212" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Nigeria&quot;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb13-213"><a href="#cb13-213" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb13-214"><a href="#cb13-214" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
-<span id="cb13-215"><a href="#cb13-215" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(<span class="at">columns =</span> avg_event_impact, <span class="at">drop_trailing_zeros =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb13-216"><a href="#cb13-216" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(<span class="at">style =</span> <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb13-217"><a href="#cb13-217" aria-hidden="true" tabindex="-1"></a>            <span class="at">locations =</span> <span class="fu">cells_column_labels</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb13-218"><a href="#cb13-218" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_caption</span>(<span class="st">&quot;Rate of Plastic Accounted per Audit for </span></span>
-<span id="cb13-219"><a href="#cb13-219" aria-hidden="true" tabindex="-1"></a><span class="st">              Highly Populated Countries&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb13-220"><a href="#cb13-220" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">country =</span> <span class="st">&quot;Country&quot;</span>, </span>
-<span id="cb13-221"><a href="#cb13-221" aria-hidden="true" tabindex="-1"></a>             <span class="at">year =</span> <span class="st">&quot;Year&quot;</span>,</span>
-<span id="cb13-222"><a href="#cb13-222" aria-hidden="true" tabindex="-1"></a>             <span class="at">total_trash =</span> <span class="st">&quot;Total Count of Plastics&quot;</span>,</span>
-<span id="cb13-223"><a href="#cb13-223" aria-hidden="true" tabindex="-1"></a>             <span class="at">num_events =</span> <span class="st">&quot;Number of Audit Events&quot;</span>,</span>
-<span id="cb13-224"><a href="#cb13-224" aria-hidden="true" tabindex="-1"></a>             <span class="at">avg_event_impact =</span> <span class="st">&quot;Average Waste Accounted for per Audit&quot;</span>)</span>
-<span id="cb13-225"><a href="#cb13-225" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-226"><a href="#cb13-226" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-227"><a href="#cb13-227" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Proportions of Plastics for each Country</span></span>
-<span id="cb13-228"><a href="#cb13-228" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-231"><a href="#cb13-231" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb13-232"><a href="#cb13-232" aria-hidden="true" tabindex="-1"></a>proportions <span class="ot">&lt;-</span> <span class="cf">function</span>(df) {</span>
-<span id="cb13-233"><a href="#cb13-233" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-234"><a href="#cb13-234" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">|&gt;</span></span>
-<span id="cb13-235"><a href="#cb13-235" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(country<span class="sc">:</span>pvc) <span class="sc">|&gt;</span></span>
-<span id="cb13-236"><a href="#cb13-236" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map_if</span>(is.numeric, <span class="sc">~</span>.x <span class="sc">/</span> df<span class="sc">$</span>total) <span class="sc">|&gt;</span></span>
-<span id="cb13-237"><a href="#cb13-237" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.data.frame</span>() </span>
-<span id="cb13-238"><a href="#cb13-238" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-239"><a href="#cb13-239" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb13-240"><a href="#cb13-240" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-241"><a href="#cb13-241" aria-hidden="true" tabindex="-1"></a>plastics_clean <span class="sc">|&gt;</span></span>
-<span id="cb13-242"><a href="#cb13-242" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">factor</span>(year)) <span class="sc">|&gt;</span></span>
-<span id="cb13-243"><a href="#cb13-243" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(country, year) <span class="sc">|&gt;</span></span>
-<span id="cb13-244"><a href="#cb13-244" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="fu">across</span>(hdpe<span class="sc">:</span>total, </span>
-<span id="cb13-245"><a href="#cb13-245" aria-hidden="true" tabindex="-1"></a>                     <span class="sc">~</span><span class="fu">sum</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)),</span>
-<span id="cb13-246"><a href="#cb13-246" aria-hidden="true" tabindex="-1"></a>              <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb13-247"><a href="#cb13-247" aria-hidden="true" tabindex="-1"></a>  <span class="fu">proportions</span>() <span class="sc">|&gt;</span></span>
-<span id="cb13-248"><a href="#cb13-248" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;India&quot;</span>, <span class="st">&quot;China&quot;</span>, <span class="st">&quot;United States of America&quot;</span>, <span class="st">&quot;Indonesia&quot;</span>, <span class="st">&quot;Nigeria&quot;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb13-249"><a href="#cb13-249" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
-<span id="cb13-250"><a href="#cb13-250" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_percent</span>(<span class="at">columns =</span> hdpe<span class="sc">:</span>pvc) <span class="sc">|&gt;</span></span>
-<span id="cb13-251"><a href="#cb13-251" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(<span class="at">style =</span> <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">&quot;bold&quot;</span>),</span>
-<span id="cb13-252"><a href="#cb13-252" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_column_labels</span>()) <span class="sc">|&gt;</span></span>
-<span id="cb13-253"><a href="#cb13-253" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_caption</span>(<span class="st">&quot;Percentage of each plastic type found in audits from highly populated countries by year&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb13-254"><a href="#cb13-254" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_move_to_end</span>(o) <span class="sc">|&gt;</span></span>
-<span id="cb13-255"><a href="#cb13-255" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">country =</span> <span class="st">&quot;Country&quot;</span>, </span>
-<span id="cb13-256"><a href="#cb13-256" aria-hidden="true" tabindex="-1"></a>             <span class="at">year =</span> <span class="st">&quot;Year&quot;</span>,</span>
-<span id="cb13-257"><a href="#cb13-257" aria-hidden="true" tabindex="-1"></a>             <span class="at">hdpe =</span> <span class="st">&quot;HDPE&quot;</span>,</span>
-<span id="cb13-258"><a href="#cb13-258" aria-hidden="true" tabindex="-1"></a>             <span class="at">ldpe =</span> <span class="st">&quot;LDPE&quot;</span>,</span>
-<span id="cb13-259"><a href="#cb13-259" aria-hidden="true" tabindex="-1"></a>             <span class="at">o =</span> <span class="st">&quot;Other&quot;</span>,</span>
-<span id="cb13-260"><a href="#cb13-260" aria-hidden="true" tabindex="-1"></a>             <span class="at">pet =</span> <span class="st">&quot;PET&quot;</span>,</span>
-<span id="cb13-261"><a href="#cb13-261" aria-hidden="true" tabindex="-1"></a>             <span class="at">pp =</span> <span class="st">&quot;PP&quot;</span>,</span>
-<span id="cb13-262"><a href="#cb13-262" aria-hidden="true" tabindex="-1"></a>             <span class="at">ps =</span> <span class="st">&quot;PS&quot;</span>,</span>
-<span id="cb13-263"><a href="#cb13-263" aria-hidden="true" tabindex="-1"></a>             <span class="at">pvc =</span> <span class="st">&quot;PVC&quot;</span>)</span>
-<span id="cb13-264"><a href="#cb13-264" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-265"><a href="#cb13-265" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-266"><a href="#cb13-266" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-267"><a href="#cb13-267" aria-hidden="true" tabindex="-1"></a>Stat 541 only: Summary tables must at a minimum have: Formatted values (e.g., decimals, percentages, currencies) Boldface headers Captions</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> &quot;Project -  report&quot;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> &quot;Jonathan Flores Martinez&quot;</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> &quot;3 April 2026&quot;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span><span class="co"> html</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="an">editor:</span><span class="co"> source</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="an">embed-resources:</span><span class="co"> true</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="an">execute:</span><span class="co"> </span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">  echo: true</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">  warning: false</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">  message: false</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="an">code-tools:</span><span class="co"> true</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="an">toc:</span><span class="co"> true</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="an">toc-location:</span><span class="co"> right</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="fu"># Environmental Plastic</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a><span class="fu"># Check in 1: Exploring the data and Generating Research Questions</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="fu">## Context of the Data</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>This was a data frame with information on plastic pollution. It was originally collected by the Break Free From Plastic (BFFP) group. They are an environmental activist with an interest in reducing the amount of plastic waste in the world. They focus on reducing the use of single use plastics and other actions across the entire life cycle of plastics. They believe that the best way to address plastic pollution comes from prevention over treating the effects of pollution. The data is two years (2019 and 2020) worth of data collected through global audits that BFFP does trying to understand the sources of plastic waste creation. The information provided by the data set is the country, parent company which created the plastic waste, the number of clean up events and volunteers, and the counts of plastic waste. This was unit-less so I am assuming individual plastic pieces collected at the event. There was a grand total count and multiple columns representing the different types of plastics ranging from the thin material of bags to PVC pipe plastic. Each row seems to represent a country and company combination. There are over 10,000 rows of data.</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cleaning Already Performed on Data</span></span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>This data was originally found in multiple folders one each for the years 2019 and 2020. Each folder then had a separate csv file for each country. jonthegeek used map_dfr to combine all the csv files into a single data frame. This function also changed the data types. All were turned into doubles as they were numbers except for the country and parent company as these were characters. He then added a year column as the ideas was to eventually combine the two years together. After cleaning up the names with janitor he did the same thing to the 2020 data. This one had some duplicate columns so he used an if_else function to take care of that. Finally the two years were bound together and some names were changed to make it easier to work with and we now have the data set we will be using.</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="fu">## Possible Research Questions</span></span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-31"><a href="#cb11-31" aria-hidden="true" tabindex="-1"></a><span class="fu">### Assessed using the data</span></span>
+<span id="cb11-32"><a href="#cb11-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-33"><a href="#cb11-33" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>We could ask if there was a change in the generation of plastic waste from one year to another. This can be looked at both by country and by parent company. We can see in what direction progress is going by looking at this data</span>
+<span id="cb11-34"><a href="#cb11-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-35"><a href="#cb11-35" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>We could look at the number of counting events and volunteers across the countries. This, along with the waste information can help us look at the impact of volunteer work. Maybe the difference in plastic waste could be correlated to the amount of volunteers and events dedicated to clean up.</span>
+<span id="cb11-36"><a href="#cb11-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-37"><a href="#cb11-37" aria-hidden="true" tabindex="-1"></a><span class="fu">### Assessed using supplemental data</span></span>
+<span id="cb11-38"><a href="#cb11-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-39"><a href="#cb11-39" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>We could ask if the type of plastic being used in the country depends on how developed the country is. Maybe some plastic is cheaper to produce and used in higher proportions in countries with less money. This matters because some plastics may be more harmful to the environment and keeping track of it would be important</span>
+<span id="cb11-40"><a href="#cb11-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-41"><a href="#cb11-41" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>We could explore the amount of waste created by companies and see if they have environmentally friendly production practices and see if that makes a difference. This could help determine the impact that said practices and policies have on the creation of plastic pollution</span>
+<span id="cb11-42"><a href="#cb11-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-43"><a href="#cb11-43" aria-hidden="true" tabindex="-1"></a><span class="fu">## Possible Visualizations</span></span>
+<span id="cb11-44"><a href="#cb11-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-45"><a href="#cb11-45" aria-hidden="true" tabindex="-1"></a><span class="al">![](images/clipboard-1100353581.png)</span></span>
+<span id="cb11-46"><a href="#cb11-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-47"><a href="#cb11-47" aria-hidden="true" tabindex="-1"></a>The dot&#39;s size could also be different sizes depending on how many companies are producing plastic waste in it.</span>
+<span id="cb11-48"><a href="#cb11-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-49"><a href="#cb11-49" aria-hidden="true" tabindex="-1"></a><span class="al">![](images/clipboard-2837951265.png)</span></span>
+<span id="cb11-50"><a href="#cb11-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-53"><a href="#cb11-53" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-54"><a href="#cb11-54" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb11-55"><a href="#cb11-55" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb11-56"><a href="#cb11-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-57"><a href="#cb11-57" aria-hidden="true" tabindex="-1"></a>plastics <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">&#39;https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2021/2021-01-26/plastics.csv&#39;</span>)</span>
+<span id="cb11-58"><a href="#cb11-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-59"><a href="#cb11-59" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-60"><a href="#cb11-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-61"><a href="#cb11-61" aria-hidden="true" tabindex="-1"></a><span class="fu"># Check in 2: Initial Data Manipulation Functions</span></span>
+<span id="cb11-62"><a href="#cb11-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-65"><a href="#cb11-65" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-66"><a href="#cb11-66" aria-hidden="true" tabindex="-1"></a>plastics <span class="sc">|&gt;</span> </span>
+<span id="cb11-67"><a href="#cb11-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span>
+<span id="cb11-68"><a href="#cb11-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-69"><a href="#cb11-69" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-70"><a href="#cb11-70" aria-hidden="true" tabindex="-1"></a><span class="fu">## Cleaning up NA Values</span></span>
+<span id="cb11-71"><a href="#cb11-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-74"><a href="#cb11-74" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-75"><a href="#cb11-75" aria-hidden="true" tabindex="-1"></a>plastics_clean <span class="ot">&lt;-</span> plastics <span class="sc">|&gt;</span> </span>
+<span id="cb11-76"><a href="#cb11-76" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(empty<span class="sc">:</span>pvc, <span class="sc">~</span><span class="fu">replace_na</span>(., <span class="dv">0</span>)),</span>
+<span id="cb11-77"><a href="#cb11-77" aria-hidden="true" tabindex="-1"></a>         <span class="at">total =</span> <span class="fu">rowSums</span>(<span class="fu">across</span>(<span class="fu">c</span>(empty<span class="sc">:</span>pvc))),</span>
+<span id="cb11-78"><a href="#cb11-78" aria-hidden="true" tabindex="-1"></a>         <span class="at">.before =</span> num_events)</span>
+<span id="cb11-79"><a href="#cb11-79" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-80"><a href="#cb11-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-81"><a href="#cb11-81" aria-hidden="true" tabindex="-1"></a>To address the NA values present in our data our group decided to turn any NA within the plastic type columns into a zero. The rationale being that when being filled out if there were no counts of a certain type some would input a 0 and others would leave the cell empty on a spreadsheet. To address NAs in the grand totals we summed the counts of the different type of plastics and found that only two discrepancies were found shown below.</span>
+<span id="cb11-82"><a href="#cb11-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-85"><a href="#cb11-85" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-86"><a href="#cb11-86" aria-hidden="true" tabindex="-1"></a>plastics_clean<span class="sc">|&gt;</span> </span>
+<span id="cb11-87"><a href="#cb11-87" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(grand_total <span class="sc">!=</span> total)</span>
+<span id="cb11-88"><a href="#cb11-88" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-89"><a href="#cb11-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-90"><a href="#cb11-90" aria-hidden="true" tabindex="-1"></a><span class="fu">## Summaries using unmodified columns</span></span>
+<span id="cb11-91"><a href="#cb11-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-92"><a href="#cb11-92" aria-hidden="true" tabindex="-1"></a>Two data summaries that use existing (unmodified) columns in the data At least one of these summaries need to be produced with a custom function. At least one of these summaries need to include iteration (either inside or outside of a function).</span>
+<span id="cb11-93"><a href="#cb11-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-94"><a href="#cb11-94" aria-hidden="true" tabindex="-1"></a><span class="fu">### Plastic Cleanup Profile by Country and Year</span></span>
+<span id="cb11-97"><a href="#cb11-97" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-98"><a href="#cb11-98" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb11-99"><a href="#cb11-99" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb11-100"><a href="#cb11-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-101"><a href="#cb11-101" aria-hidden="true" tabindex="-1"></a>country_profile <span class="ot">&lt;-</span> <span class="cf">function</span>(data, group_var1, group_var2, <span class="at">min_audits =</span> <span class="dv">10</span>) {</span>
+<span id="cb11-102"><a href="#cb11-102" aria-hidden="true" tabindex="-1"></a>  data <span class="sc">|&gt;</span></span>
+<span id="cb11-103"><a href="#cb11-103" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(country), country <span class="sc">!=</span> <span class="st">&quot;EMPTY&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-104"><a href="#cb11-104" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>({{ group_var1 }}, {{ group_var2 }}) <span class="sc">|&gt;</span></span>
+<span id="cb11-105"><a href="#cb11-105" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(</span>
+<span id="cb11-106"><a href="#cb11-106" aria-hidden="true" tabindex="-1"></a>      <span class="at">audits =</span> <span class="fu">n</span>(),</span>
+<span id="cb11-107"><a href="#cb11-107" aria-hidden="true" tabindex="-1"></a>      <span class="at">total_pieces =</span> <span class="fu">sum</span>(total),</span>
+<span id="cb11-108"><a href="#cb11-108" aria-hidden="true" tabindex="-1"></a>      <span class="at">median_pieces =</span> <span class="fu">median</span>(total),</span>
+<span id="cb11-109"><a href="#cb11-109" aria-hidden="true" tabindex="-1"></a>      <span class="at">mean_pieces =</span> <span class="fu">mean</span>(total),</span>
+<span id="cb11-110"><a href="#cb11-110" aria-hidden="true" tabindex="-1"></a>      <span class="at">max_pieces =</span> <span class="fu">max</span>(total),</span>
+<span id="cb11-111"><a href="#cb11-111" aria-hidden="true" tabindex="-1"></a>      <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span></span>
+<span id="cb11-112"><a href="#cb11-112" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(audits <span class="sc">&gt;=</span> min_audits) <span class="sc">|&gt;</span></span>
+<span id="cb11-114"><a href="#cb11-114" aria-hidden="true" tabindex="-1"></a>    <span class="fu">arrange</span>({{ group_var1 }}, {{ group_var2 }}) <span class="sc">|&gt;</span></span>
+<span id="cb11-115"><a href="#cb11-115" aria-hidden="true" tabindex="-1"></a>    <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tab_header</span>(</span>
+<span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="fu">md</span>(</span>
+<span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a>        <span class="fu">paste0</span>(</span>
+<span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot;**Table.** Plastic cleanup profile by country and year for countries with at least &quot;</span>,</span>
+<span id="cb11-120"><a href="#cb11-120" aria-hidden="true" tabindex="-1"></a>           min_audits,</span>
+<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a>          <span class="st">&quot; audits.&quot;</span></span>
+<span id="cb11-122"><a href="#cb11-122" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb11-123"><a href="#cb11-123" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb11-124"><a href="#cb11-124" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb11-125"><a href="#cb11-125" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(</span>
+<span id="cb11-126"><a href="#cb11-126" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">c</span>(audits, total_pieces, median_pieces, mean_pieces, max_pieces),</span>
+<span id="cb11-127"><a href="#cb11-127" aria-hidden="true" tabindex="-1"></a>    <span class="at">decimals =</span> <span class="dv">1</span>,</span>
+<span id="cb11-128"><a href="#cb11-128" aria-hidden="true" tabindex="-1"></a>    <span class="at">use_seps =</span> <span class="cn">TRUE</span></span>
+<span id="cb11-129"><a href="#cb11-129" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb11-130"><a href="#cb11-130" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
+<span id="cb11-131"><a href="#cb11-131" aria-hidden="true" tabindex="-1"></a>    <span class="at">country =</span> <span class="fu">md</span>(<span class="st">&quot;**Country**&quot;</span>),</span>
+<span id="cb11-132"><a href="#cb11-132" aria-hidden="true" tabindex="-1"></a>    <span class="at">year =</span> <span class="fu">md</span>(<span class="st">&quot;**Year**&quot;</span>),</span>
+<span id="cb11-133"><a href="#cb11-133" aria-hidden="true" tabindex="-1"></a>    <span class="at">audits =</span> <span class="fu">md</span>(<span class="st">&quot;**Audits**&quot;</span>),</span>
+<span id="cb11-134"><a href="#cb11-134" aria-hidden="true" tabindex="-1"></a>    <span class="at">total_pieces =</span> <span class="fu">md</span>(<span class="st">&quot;**Total Pieces**&quot;</span>),</span>
+<span id="cb11-135"><a href="#cb11-135" aria-hidden="true" tabindex="-1"></a>    <span class="at">median_pieces =</span> <span class="fu">md</span>(<span class="st">&quot;**Median Pieces**&quot;</span>),</span>
+<span id="cb11-136"><a href="#cb11-136" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_pieces =</span> <span class="fu">md</span>(<span class="st">&quot;**Mean Pieces**&quot;</span>),</span>
+<span id="cb11-137"><a href="#cb11-137" aria-hidden="true" tabindex="-1"></a>    <span class="at">max_pieces =</span> <span class="fu">md</span>(<span class="st">&quot;**Max Pieces**&quot;</span>)</span>
+<span id="cb11-138"><a href="#cb11-138" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-139"><a href="#cb11-139" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-140"><a href="#cb11-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-141"><a href="#cb11-141" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-142"><a href="#cb11-142" aria-hidden="true" tabindex="-1"></a><span class="fu">country_profile</span>(plastics_clean, country, year, <span class="at">min_audits =</span> <span class="dv">1</span>) </span>
+<span id="cb11-143"><a href="#cb11-143" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-144"><a href="#cb11-144" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-145"><a href="#cb11-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-146"><a href="#cb11-146" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-147"><a href="#cb11-147" aria-hidden="true" tabindex="-1"></a><span class="fu">### Plastic Type Across All Audits</span></span>
+<span id="cb11-150"><a href="#cb11-150" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-151"><a href="#cb11-151" aria-hidden="true" tabindex="-1"></a>plastic_cols <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;hdpe&quot;</span>, <span class="st">&quot;ldpe&quot;</span>, <span class="st">&quot;o&quot;</span>, <span class="st">&quot;pet&quot;</span>, <span class="st">&quot;pp&quot;</span>, <span class="st">&quot;ps&quot;</span>, <span class="st">&quot;pvc&quot;</span>)</span>
+<span id="cb11-152"><a href="#cb11-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-153"><a href="#cb11-153" aria-hidden="true" tabindex="-1"></a><span class="fu">map_dfr</span>(plastic_cols, <span class="cf">function</span>(col) {</span>
+<span id="cb11-154"><a href="#cb11-154" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
+<span id="cb11-155"><a href="#cb11-155" aria-hidden="true" tabindex="-1"></a>    <span class="at">plastic_type =</span> col,</span>
+<span id="cb11-156"><a href="#cb11-156" aria-hidden="true" tabindex="-1"></a>    <span class="at">total =</span> <span class="fu">sum</span>(plastics_clean[[col]]),</span>
+<span id="cb11-157"><a href="#cb11-157" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(plastics_clean[[col]]),</span>
+<span id="cb11-158"><a href="#cb11-158" aria-hidden="true" tabindex="-1"></a>    <span class="at">median =</span> <span class="fu">median</span>(plastics_clean[[col]]),</span>
+<span id="cb11-159"><a href="#cb11-159" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="fu">sd</span>(plastics_clean[[col]]),</span>
+<span id="cb11-160"><a href="#cb11-160" aria-hidden="true" tabindex="-1"></a>    <span class="at">iqr =</span> <span class="fu">IQR</span>(plastics_clean[[col]]),</span>
+<span id="cb11-161"><a href="#cb11-161" aria-hidden="true" tabindex="-1"></a>    <span class="at">min =</span> <span class="fu">min</span>(plastics_clean[[col]]),</span>
+<span id="cb11-162"><a href="#cb11-162" aria-hidden="true" tabindex="-1"></a>    <span class="at">max =</span> <span class="fu">max</span>(plastics_clean[[col]]),</span>
+<span id="cb11-163"><a href="#cb11-163" aria-hidden="true" tabindex="-1"></a>    <span class="at">audits_with_plastic_type =</span> <span class="fu">sum</span>(plastics_clean[[col]] <span class="sc">&gt;</span> <span class="dv">0</span>),</span>
+<span id="cb11-164"><a href="#cb11-164" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_of_audits =</span> <span class="fu">mean</span>(plastics_clean[[col]] <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb11-165"><a href="#cb11-165" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-166"><a href="#cb11-166" aria-hidden="true" tabindex="-1"></a>}) <span class="sc">|&gt;</span></span>
+<span id="cb11-167"><a href="#cb11-167" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb11-168"><a href="#cb11-168" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_percent</span>(<span class="at">columns =</span> percent_of_audits, <span class="at">decimals =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-169"><a href="#cb11-169" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(</span>
+<span id="cb11-170"><a href="#cb11-170" aria-hidden="true" tabindex="-1"></a>    <span class="at">style =</span> <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb11-171"><a href="#cb11-171" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_column_labels</span>()</span>
+<span id="cb11-172"><a href="#cb11-172" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb11-173"><a href="#cb11-173" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_header</span>(<span class="st">&quot;Summary statistics for each plastic type across all audits&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-174"><a href="#cb11-174" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
+<span id="cb11-175"><a href="#cb11-175" aria-hidden="true" tabindex="-1"></a>    <span class="at">plastic_type =</span> <span class="st">&quot;Plastic Type&quot;</span>,</span>
+<span id="cb11-176"><a href="#cb11-176" aria-hidden="true" tabindex="-1"></a>    <span class="at">total =</span> <span class="st">&quot;Total&quot;</span>,</span>
+<span id="cb11-177"><a href="#cb11-177" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="st">&quot;Mean&quot;</span>,</span>
+<span id="cb11-178"><a href="#cb11-178" aria-hidden="true" tabindex="-1"></a>    <span class="at">median =</span> <span class="st">&quot;Median&quot;</span>,</span>
+<span id="cb11-179"><a href="#cb11-179" aria-hidden="true" tabindex="-1"></a>    <span class="at">sd =</span> <span class="st">&quot;SD&quot;</span>,</span>
+<span id="cb11-180"><a href="#cb11-180" aria-hidden="true" tabindex="-1"></a>    <span class="at">iqr =</span> <span class="st">&quot;IQR&quot;</span>,</span>
+<span id="cb11-181"><a href="#cb11-181" aria-hidden="true" tabindex="-1"></a>    <span class="at">min =</span> <span class="st">&quot;Min&quot;</span>,</span>
+<span id="cb11-182"><a href="#cb11-182" aria-hidden="true" tabindex="-1"></a>    <span class="at">max =</span> <span class="st">&quot;Max&quot;</span>,</span>
+<span id="cb11-183"><a href="#cb11-183" aria-hidden="true" tabindex="-1"></a>    <span class="at">audits_with_plastic_type =</span> <span class="st">&quot;Audits With Plastic Type&quot;</span>,</span>
+<span id="cb11-184"><a href="#cb11-184" aria-hidden="true" tabindex="-1"></a>    <span class="at">percent_of_audits =</span> <span class="st">&quot;Percent of Audits&quot;</span></span>
+<span id="cb11-185"><a href="#cb11-185" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb11-186"><a href="#cb11-186" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-187"><a href="#cb11-187" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-188"><a href="#cb11-188" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-189"><a href="#cb11-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-190"><a href="#cb11-190" aria-hidden="true" tabindex="-1"></a><span class="fu">## Data Summaries Using Modiefied Columns</span></span>
+<span id="cb11-191"><a href="#cb11-191" aria-hidden="true" tabindex="-1"></a>Two data summaries that modify columns from the original data At least one of these summaries need to be produced with a custom function. At least one of these summaries need to include iteration (either inside or outside of a function).</span>
+<span id="cb11-192"><a href="#cb11-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-193"><a href="#cb11-193" aria-hidden="true" tabindex="-1"></a><span class="fu">### Waste per Audit Summary</span></span>
+<span id="cb11-194"><a href="#cb11-194" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-197"><a href="#cb11-197" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-198"><a href="#cb11-198" aria-hidden="true" tabindex="-1"></a>rate_ify <span class="ot">&lt;-</span> <span class="cf">function</span>(df, numerator, denominator, <span class="at">name =</span> rate){</span>
+<span id="cb11-199"><a href="#cb11-199" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stopifnot</span>(<span class="fu">is.data.frame</span>(df))</span>
+<span id="cb11-200"><a href="#cb11-200" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">|&gt;</span></span>
+<span id="cb11-201"><a href="#cb11-201" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>({{name}} <span class="sc">:</span><span class="er">=</span> {{numerator}}<span class="sc">/</span>{{denominator}})</span>
+<span id="cb11-202"><a href="#cb11-202" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-203"><a href="#cb11-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-204"><a href="#cb11-204" aria-hidden="true" tabindex="-1"></a>plastics_clean <span class="sc">|&gt;</span> </span>
+<span id="cb11-205"><a href="#cb11-205" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(country,year) <span class="sc">|&gt;</span> </span>
+<span id="cb11-206"><a href="#cb11-206" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">total_trash =</span> <span class="fu">sum</span>(total),</span>
+<span id="cb11-207"><a href="#cb11-207" aria-hidden="true" tabindex="-1"></a>            <span class="at">num_events =</span> <span class="fu">mean</span>(num_events),</span>
+<span id="cb11-208"><a href="#cb11-208" aria-hidden="true" tabindex="-1"></a>            <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-209"><a href="#cb11-209" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rate_ify</span>(<span class="at">numerator =</span> total_trash,</span>
+<span id="cb11-210"><a href="#cb11-210" aria-hidden="true" tabindex="-1"></a>           <span class="at">denominator =</span> num_events,</span>
+<span id="cb11-211"><a href="#cb11-211" aria-hidden="true" tabindex="-1"></a>           <span class="at">name =</span> avg_event_impact) <span class="sc">|&gt;</span> </span>
+<span id="cb11-212"><a href="#cb11-212" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;India&quot;</span>,</span>
+<span id="cb11-213"><a href="#cb11-213" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;China&quot;</span>,</span>
+<span id="cb11-214"><a href="#cb11-214" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;United States of America&quot;</span>,</span>
+<span id="cb11-215"><a href="#cb11-215" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Indonesia&quot;</span>, </span>
+<span id="cb11-216"><a href="#cb11-216" aria-hidden="true" tabindex="-1"></a>                        <span class="st">&quot;Nigeria&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb11-217"><a href="#cb11-217" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb11-218"><a href="#cb11-218" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb11-219"><a href="#cb11-219" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(<span class="at">columns =</span> avg_event_impact, <span class="at">drop_trailing_zeros =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-220"><a href="#cb11-220" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(<span class="at">style =</span> <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb11-221"><a href="#cb11-221" aria-hidden="true" tabindex="-1"></a>            <span class="at">locations =</span> <span class="fu">cells_column_labels</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb11-222"><a href="#cb11-222" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_caption</span>(<span class="st">&quot;Rate of Plastic Accounted per Audit for </span></span>
+<span id="cb11-223"><a href="#cb11-223" aria-hidden="true" tabindex="-1"></a><span class="st">              Highly Populated Countries&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-224"><a href="#cb11-224" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">country =</span> <span class="st">&quot;Country&quot;</span>, </span>
+<span id="cb11-225"><a href="#cb11-225" aria-hidden="true" tabindex="-1"></a>             <span class="at">year =</span> <span class="st">&quot;Year&quot;</span>,</span>
+<span id="cb11-226"><a href="#cb11-226" aria-hidden="true" tabindex="-1"></a>             <span class="at">total_trash =</span> <span class="st">&quot;Total Count of Plastics&quot;</span>,</span>
+<span id="cb11-227"><a href="#cb11-227" aria-hidden="true" tabindex="-1"></a>             <span class="at">num_events =</span> <span class="st">&quot;Number of Audit Events&quot;</span>,</span>
+<span id="cb11-228"><a href="#cb11-228" aria-hidden="true" tabindex="-1"></a>             <span class="at">avg_event_impact =</span> <span class="st">&quot;Average Waste Accounted for per Audit&quot;</span>)</span>
+<span id="cb11-229"><a href="#cb11-229" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-230"><a href="#cb11-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-231"><a href="#cb11-231" aria-hidden="true" tabindex="-1"></a><span class="fu">### Proportions of Plastics for each Country</span></span>
+<span id="cb11-232"><a href="#cb11-232" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-235"><a href="#cb11-235" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb11-236"><a href="#cb11-236" aria-hidden="true" tabindex="-1"></a>proportions <span class="ot">&lt;-</span> <span class="cf">function</span>(df) {</span>
+<span id="cb11-237"><a href="#cb11-237" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-238"><a href="#cb11-238" aria-hidden="true" tabindex="-1"></a>  df <span class="sc">|&gt;</span></span>
+<span id="cb11-239"><a href="#cb11-239" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(country<span class="sc">:</span>pvc) <span class="sc">|&gt;</span></span>
+<span id="cb11-240"><a href="#cb11-240" aria-hidden="true" tabindex="-1"></a>    <span class="fu">map_if</span>(is.numeric, <span class="sc">~</span>.x <span class="sc">/</span> df<span class="sc">$</span>total) <span class="sc">|&gt;</span></span>
+<span id="cb11-241"><a href="#cb11-241" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as.data.frame</span>() </span>
+<span id="cb11-242"><a href="#cb11-242" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb11-243"><a href="#cb11-243" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-244"><a href="#cb11-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-245"><a href="#cb11-245" aria-hidden="true" tabindex="-1"></a>plastics_clean <span class="sc">|&gt;</span></span>
+<span id="cb11-246"><a href="#cb11-246" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">factor</span>(year)) <span class="sc">|&gt;</span></span>
+<span id="cb11-247"><a href="#cb11-247" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(country, year) <span class="sc">|&gt;</span></span>
+<span id="cb11-248"><a href="#cb11-248" aria-hidden="true" tabindex="-1"></a>    <span class="fu">summarise</span>(<span class="fu">across</span>(hdpe<span class="sc">:</span>total, </span>
+<span id="cb11-249"><a href="#cb11-249" aria-hidden="true" tabindex="-1"></a>                     <span class="sc">~</span><span class="fu">sum</span>(.x, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)),</span>
+<span id="cb11-250"><a href="#cb11-250" aria-hidden="true" tabindex="-1"></a>              <span class="at">.groups =</span> <span class="st">&quot;drop&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-251"><a href="#cb11-251" aria-hidden="true" tabindex="-1"></a>  <span class="fu">proportions</span>() <span class="sc">|&gt;</span></span>
+<span id="cb11-252"><a href="#cb11-252" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(country <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;India&quot;</span>, <span class="st">&quot;China&quot;</span>, <span class="st">&quot;United States of America&quot;</span>, <span class="st">&quot;Indonesia&quot;</span>, <span class="st">&quot;Nigeria&quot;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb11-253"><a href="#cb11-253" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gt</span>() <span class="sc">|&gt;</span></span>
+<span id="cb11-254"><a href="#cb11-254" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_percent</span>(<span class="at">columns =</span> hdpe<span class="sc">:</span>pvc) <span class="sc">|&gt;</span></span>
+<span id="cb11-255"><a href="#cb11-255" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_style</span>(<span class="at">style =</span> <span class="fu">cell_text</span>(<span class="at">weight =</span> <span class="st">&quot;bold&quot;</span>),</span>
+<span id="cb11-256"><a href="#cb11-256" aria-hidden="true" tabindex="-1"></a>    <span class="at">locations =</span> <span class="fu">cells_column_labels</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb11-257"><a href="#cb11-257" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tab_caption</span>(<span class="st">&quot;Percentage of each plastic type found in audits from highly populated countries by year&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-258"><a href="#cb11-258" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_move_to_end</span>(o) <span class="sc">|&gt;</span></span>
+<span id="cb11-259"><a href="#cb11-259" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(<span class="at">country =</span> <span class="st">&quot;Country&quot;</span>, </span>
+<span id="cb11-260"><a href="#cb11-260" aria-hidden="true" tabindex="-1"></a>             <span class="at">year =</span> <span class="st">&quot;Year&quot;</span>,</span>
+<span id="cb11-261"><a href="#cb11-261" aria-hidden="true" tabindex="-1"></a>             <span class="at">hdpe =</span> <span class="st">&quot;HDPE&quot;</span>,</span>
+<span id="cb11-262"><a href="#cb11-262" aria-hidden="true" tabindex="-1"></a>             <span class="at">ldpe =</span> <span class="st">&quot;LDPE&quot;</span>,</span>
+<span id="cb11-263"><a href="#cb11-263" aria-hidden="true" tabindex="-1"></a>             <span class="at">o =</span> <span class="st">&quot;Other&quot;</span>,</span>
+<span id="cb11-264"><a href="#cb11-264" aria-hidden="true" tabindex="-1"></a>             <span class="at">pet =</span> <span class="st">&quot;PET&quot;</span>,</span>
+<span id="cb11-265"><a href="#cb11-265" aria-hidden="true" tabindex="-1"></a>             <span class="at">pp =</span> <span class="st">&quot;PP&quot;</span>,</span>
+<span id="cb11-266"><a href="#cb11-266" aria-hidden="true" tabindex="-1"></a>             <span class="at">ps =</span> <span class="st">&quot;PS&quot;</span>,</span>
+<span id="cb11-267"><a href="#cb11-267" aria-hidden="true" tabindex="-1"></a>             <span class="at">pvc =</span> <span class="st">&quot;PVC&quot;</span>)</span>
+<span id="cb11-268"><a href="#cb11-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-269"><a href="#cb11-269" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-270"><a href="#cb11-270" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-271"><a href="#cb11-271" aria-hidden="true" tabindex="-1"></a>Stat 541 only: Summary tables must at a minimum have: Formatted values (e.g., decimals, percentages, currencies) Boldface headers Captions</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
