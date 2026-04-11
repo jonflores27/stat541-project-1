@@ -55,7 +55,6 @@ plastics <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/t
 
 ```
 
-
 # Check in 2: Initial Data Manipulation Functions
 
 ```{r}
@@ -63,6 +62,7 @@ plastics |>
   summary()
 
 ```
+
 ```{r}
 plastics_clean <- plastics |> 
   mutate(across(empty:pvc, ~replace_na(., 0)),
@@ -70,22 +70,19 @@ plastics_clean <- plastics |>
          .before = num_events)
 ```
 
-To address the NA values present in our data our group decided to turn any NA within the plastic type columns into a zero.
-The rationale being that when being filled out if there were no counts of a certain type some would input a 0 and others would leave the cell empty on a spreadsheet.
-To address NAs in the grand totals we summed the counts of the different type of plastics and found that only two discrepancies were found shown below.
+To address the NA values present in our data our group decided to turn any NA within the plastic type columns into a zero. The rationale being that when being filled out if there were no counts of a certain type some would input a 0 and others would leave the cell empty on a spreadsheet. To address NAs in the grand totals we summed the counts of the different type of plastics and found that only two discrepancies were found shown below.
 
 ```{r}
 plastics_clean|> 
   filter(grand_total != total)
 ```
+
 ```{r}
 plastics_clean |>
   filter(if_any(empty:grand_total, is.na))
 ```
 
-Two data summaries that use existing (unmodified) columns in the data
-At least one of these summaries need to be produced with a custom function.
-At least one of these summaries need to include iteration (either inside or outside of a function).
+Two data summaries that use existing (unmodified) columns in the data At least one of these summaries need to be produced with a custom function. At least one of these summaries need to include iteration (either inside or outside of a function).
 
 ```{r}
 library(tidyverse)
@@ -174,15 +171,16 @@ map_dfr(plastic_cols, function(col) {
 
 ```
 
-Two data summaries that modify columns from the original data
-At least one of these summaries need to be produced with a custom function.
-At least one of these summaries need to include iteration (either inside or outside of a function).
+Two data summaries that modify columns from the original data At least one of these summaries need to be produced with a custom function. At least one of these summaries need to include iteration (either inside or outside of a function).
 
 #### 
+
 ```{r}
 
 rate_ify <- function(df, numerator, denominator, name = rate){
-  df |> mutate({{name}} := {{numerator}}/{{denominator}})
+  stopifnot(is.data.frame(df))
+  df |>
+    mutate({{name}} := {{numerator}}/{{denominator}})
 }
 
 plastics_clean |> 
@@ -202,7 +200,7 @@ plastics_clean |>
   gt() |>
   fmt_number(columns = avg_event_impact, drop_trailing_zeros = TRUE) |> 
   tab_style(style = cell_text(weight = "bold"),
-    locations = cells_column_labels()) |>
+            locations = cells_column_labels()) |>
   tab_caption("Rate of Plastic Accounted per Audit for 
               Highly Populated Countries") |>
   cols_label(country = "Country", 
@@ -210,10 +208,7 @@ plastics_clean |>
              total_trash = "Total Count of Plastics",
              num_events = "Number of Audit Events",
              avg_event_impact = "Average Waste Accounted for per Audit")
-```           
-
-
-
+```
 
 #### Proportions of Plastics for each Country
 
@@ -254,7 +249,4 @@ plastics_clean |>
 
 ```
 
-Stat 541 only: Summary tables must at a minimum have:
-Formatted values (e.g., decimals, percentages, currencies)
-Boldface headers
-Captions
+Stat 541 only: Summary tables must at a minimum have: Formatted values (e.g., decimals, percentages, currencies) Boldface headers Captions
