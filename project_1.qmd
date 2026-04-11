@@ -128,7 +128,7 @@ country_profile <- function(data, group_var1, group_var2, min_audits = 10) {
 }
 
 
-country_profile(plastics, country, year, min_audits = 1) 
+country_profile(plastics_clean, country, year, min_audits = 1) 
 ```
 
 ```{r}
@@ -137,15 +137,15 @@ plastic_cols <- c("hdpe", "ldpe", "o", "pet", "pp", "ps", "pvc")
 map_dfr(plastic_cols, function(col) {
   tibble(
     plastic_type = col,
-    total = sum(plastics[[col]]),
-    mean = mean(plastics[[col]]),
-    median = median(plastics[[col]]),
-    sd = sd(plastics[[col]]),
-    iqr = IQR(plastics[[col]]),
-    min = min(plastics[[col]]),
-    max = max(plastics[[col]]),
-    audits_with_plastic_type = sum(plastics[[col]] > 0),
-    percent_of_audits = mean(plastics[[col]] > 0)
+    total = sum(plastics_clean[[col]]),
+    mean = mean(plastics_clean[[col]]),
+    median = median(plastics_clean[[col]]),
+    sd = sd(plastics_clean[[col]]),
+    iqr = IQR(plastics_clean[[col]]),
+    min = min(plastics_clean[[col]]),
+    max = max(plastics_clean[[col]]),
+    audits_with_plastic_type = sum(plastics_clean[[col]] > 0),
+    percent_of_audits = mean(plastics_clean[[col]] > 0)
   )
 }) |>
   gt() |>
