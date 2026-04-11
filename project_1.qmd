@@ -9,7 +9,6 @@ execute:
   echo: true
   warning: false
   message: false
-code-fold: true
 code-tools: true
 ---
 
@@ -65,13 +64,41 @@ plastics |>
 
 ```
 ```{r}
+plastics_clean <- plastics |> 
+  mutate(across(empty:pvc, ~replace_na(., 0)),
+         total = rowSums(across(c(empty:pvc))),
+         .before = num_events)
+```
+
+To address the NA values present in our data our group decided to turn any NA within the plastic type columns into a zero.
+The rationale being that when being filled out if there were no counts of a certain type some would input a 0 and others would leave the cell empty on a spreadsheet.
+To address NAs in the grand totals we summed the counts of the different type of plastics and found that only two discrepancies were found shown below.
+
+```{r}
+plastics_clean|> 
+  filter(grand_total != total)
+```
+
+
+
+```{r}
+
+rate_ify <- function(df, numerator, denominator, name = rate){
+  df |> mutate({{name}} := {{numerator}}/{{denominator}})
+}
 
 plastics |> 
   group_by(country,year) |> 
-  summarise(sum(grand_total), mean(num_events), .groups = "drop") |> 
-  mutate(event_impact = `sum(grand_total)`/`mean(num_events)`) |> 
-  select(country, `mean(num_events)`, event_impact) |> 
-  gt()
+  summarise(total_trash = sum(grand_total),
+            num_events = mean(num_events),
+            .groups = "drop") |>
+  rate_ify(total_trash, num_events, avg_event_impact) |> 
+ 
+  gt() |>
+  fmt_number(columns = avg_event_impact, drop_trailing_zeros = TRUE)
+```           
+
+  
 
 
 ```
@@ -82,9 +109,6 @@ At least one of these summaries need to be produced with a custom function.
 At least one of these summaries need to include iteration (either inside or outside of a function).
 
 ```{r}
-plastics |> 
-  mutate(v_effort = grand_total/volunteers,
-         event_impact = grand_total/num_events)
 
 ```
 
@@ -105,5 +129,43 @@ Formatted values (e.g., decimals, percentages, currencies)
 Boldface headers
 Captions
 
+#### Proportions of Plastics for each Country
 
+```{r}
+
+proportions <- function(df) {
+  
+  df |>
+    select(country:pvc) |>
+    map_if(is.numeric, ~.x / df$grand_total) |>
+    as.data.frame() 
+  
+}
+
+plastics |>
+    mutate(year = factor(year)) |>
+    group_by(country, year) |>
+    summarise(across(hdpe:grand_total, 
+                     ~sum(.x, na.rm = TRUE)),
+              .groups = "drop") |>
+  proportions() |>
+  filter(country %in% c("India", "China", "United States of America", "Indonesia", "Nigeria")) |>
+  gt() |>
+  fmt_percent(columns = hdpe:pvc) |>
+  tab_style(style = cell_text(weight = "bold"),
+    locations = cells_column_labels()) |>
+  tab_caption("Percentage of each plastic type found in audits from highly populated countries by year") |>
+  cols_move_to_end(o) |>
+  cols_label(country = "Country", 
+             year = "Year",
+             hdpe = "HDPE",
+             ldpe = "LDPE",
+             o = "Other",
+             pet = "PET",
+             pp = "PP",
+             ps = "PS",
+             pvc = "PVC")
+
+```
+```
 
