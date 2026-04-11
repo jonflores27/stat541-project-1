@@ -78,6 +78,10 @@ To address NAs in the grand totals we summed the counts of the different type of
 plastics_clean|> 
   filter(grand_total != total)
 ```
+```{r}
+plastics_clean |>
+  filter(if_any(empty:grand_total, is.na))
+```
 
 Two data summaries that use existing (unmodified) columns in the data
 At least one of these summaries need to be produced with a custom function.
@@ -93,10 +97,10 @@ country_profile <- function(data, group_var1, group_var2, min_audits = 10) {
     group_by({{ group_var1 }}, {{ group_var2 }}) |>
     summarise(
       audits = n(),
-      total_pieces = sum(grand_total),
-      median_pieces = median(grand_total),
-      mean_pieces = mean(grand_total),
-      max_pieces = max(grand_total),
+      total_pieces = sum(total),
+      median_pieces = median(total),
+      mean_pieces = mean(total),
+      max_pieces = max(total),
       .groups = "drop"
     ) |>
     filter(audits >= min_audits) |>
@@ -219,15 +223,15 @@ proportions <- function(df) {
   
   df |>
     select(country:pvc) |>
-    map_if(is.numeric, ~.x / df$grand_total) |>
+    map_if(is.numeric, ~.x / df$total) |>
     as.data.frame() 
   
 }
 
-plastics |>
+plastics_clean |>
     mutate(year = factor(year)) |>
     group_by(country, year) |>
-    summarise(across(hdpe:grand_total, 
+    summarise(across(hdpe:total, 
                      ~sum(.x, na.rm = TRUE)),
               .groups = "drop") |>
   proportions() |>
