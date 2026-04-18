@@ -52,6 +52,10 @@ The dot's size could also be different sizes depending on how many companies are
 
 library(tidyverse)
 library(gt)
+library(httr)
+library(stringr)
+library(tidyjson)
+
 
 plastics <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2021/2021-01-26/plastics.csv')
 
@@ -257,3 +261,86 @@ plastics_clean |>
 ```
 
 Stat 541 only: Summary tables must at a minimum have: Formatted values (e.g., decimals, percentages, currencies) Boldface headers Captions
+
+
+
+# Check in 4
+
+```{r}
+plastics_clean2 <- plastics |> 
+  mutate(country = str_to_title(country),
+         country = str_squish(country))
+```
+
+
+```{r}
+plastics_clean3 <- plastics_clean2 |> 
+  mutate(country = case_when(
+    country == "Taiwan_ Republic Of China (Roc)" ~ "Taiwan",
+    country == "United Kingdom Of Great Britain & Northern Ireland" ~ "Northern Ireland",
+    country == "Cote D_ivoire" ~ "Cote D'ivoire",
+    country == "Empty" ~ "Random",
+    TRUE ~ country
+))
+
+test_list <- unique(plastics_clean3$country) |> 
+  as.list()
+
+```
+
+
+```{r}
+key = "cdmGICr9oeapeWwOYXNvZsobPqAiUhnvL0ZycpwB"
+```
+
+
+
+```{r}
+
+mining2 <- function(country){
+
+  url <- str_c("https://api.api-ninjas.com/v1/country?name=", country)
+
+  res <- GET(
+    url = url,
+    add_headers("API_key" = key)
+  )
+
+  rawToChar(res$content) |>
+    as.tbl_json() |>
+    gather_array() |>
+    spread_all() |>
+    mutate(input_country = country) |>
+    as_tibble() 
+}
+```
+
+```{r}
+safe_mining <- possibly(mining2, otherwise = tibble())
+
+
+result <- map(test_list, safe_mining) |>
+  bind_rows(.id = "id")
+```
+
+```{r}
+result <- result |>
+  mutate(across(everything(), as.character))
+```
+
+```{r}
+result
+```
+
+
+```{r}
+final <- plastics_clean3 |>
+  left_join(result, by = c("country" = "input_country"))
+```
+
+
+
+```{r}
+unique(plastics_clean3$country)
+```
+
