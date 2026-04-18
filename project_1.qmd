@@ -303,7 +303,7 @@ mining2 <- function(country){
 
   res <- GET(
     url = url,
-    add_headers("API_key" = key)
+    add_headers("X-Api-Key" = key)
   )
 
   rawToChar(res$content) |>
@@ -341,6 +341,6 @@ final <- plastics_clean3 |>
 
 
 ```{r}
-unique(plastics_clean3$country)
+final
 ```
 
