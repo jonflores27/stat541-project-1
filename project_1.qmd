@@ -293,7 +293,7 @@ test_list2 <- unique(plastics_clean$country)
 
 Key to API Use own if possible
 ```{r}
-key = "cdmGICr9oeapeWwOYXNvZsobPqAiUhnvL0ZycpwB"
+key <- "cdmGICr9oeapeWwOYXNvZsobPqAiUhnvL0ZycpwB"
 ```
 
 
