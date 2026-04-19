@@ -266,10 +266,11 @@ Stat 541 only: Summary tables must at a minimum have: Formatted values (e.g., de
 
 # Check in 4
 
-
+## API With iteration
 
 ```{r}
-#unused, used plastics_clean1
+
+# unused, used plastics_clean, the original to make joining with group members easier
 
 plastics_clean3 <- plastics_clean |> 
   mutate(country = str_to_title(country),
@@ -290,12 +291,13 @@ test_list2 <- unique(plastics_clean$country)
 ```
 
 
+Key to API Use own if possible
 ```{r}
 key = "cdmGICr9oeapeWwOYXNvZsobPqAiUhnvL0ZycpwB"
 ```
 
 
-
+### Function
 ```{r}
 
 mining2 <- function(country){
@@ -322,8 +324,7 @@ safe_mining <- possibly(mining2, otherwise = tibble())
 
 
 result <- map(test_list2, safe_mining) |>
-  bind_rows(.id = "id")|>
-  mutate(across(everything(), as.character))
+  bind_rows(.id = "id")
 ```
 
 
@@ -346,16 +347,22 @@ final <- plastics_clean |>
 colnames(final)
 ```
 
+### Joing with the rest of the data and Data Summary
 ```{r}
 final |> 
-  select(country:volunteers, gdp, imports, pop_density, population, employment_industry,employment_agriculture, employment_services) |> 
-  mutate(across(gdp:employment_services, as.numeric)) |> 
+  select(country:volunteers, gdp, imports, pop_density, population, employment_industry,employment_agriculture, employment_services) |>
   group_by(country) |> 
   summarise(total_waste = sum(total),
             industry = mean(employment_industry),
             service = mean(employment_services),
             ag = mean(employment_agriculture),
-            .groups = "drop") |> 
+            .groups = "drop") |>
+  mutate(
+    largest_sector = case_when(
+      industry >= service & industry >= ag ~ "Industry",
+      service >= industry & service >= ag ~ "Service",
+      ag >= industry & ag >= service ~ "Agriculture"),
+    .after = total_waste ) |> 
   gt() |> 
   tab_style(style = cell_text(weight = "bold"),
             locations = cells_column_labels()) |>
@@ -364,21 +371,16 @@ final |>
              total_waste = "Total Count of Plastics",
              industry = "Percent of Employment in Industry Sector",
              service = "Percent of Employment in Service Sector",
-             ag = "Percent of Employment in Agriculture Sector")
+             ag = "Percent of Employment in Agriculture Sector",
+             largest_sector = "Largest Employment Sector")
 ```
+This API provided statistics on the countries of the world. By iterating against the countries in our data set we were able to get information on them. The API is unclear on which years the data is from and because of that we are looking at measures that we consider to be more stable at least within the years that our original data is from, 2019 and 2020. Sectors of employment is one of those fields. Other there are other interesting variables in this new data as well including but not limited to endangered species, forested area, and co2 emmissions.
 
 
-
-
-
-
-
-
-
-
-
+## API 2
 ```{r}
 library(httr)
+library(tidyjson)
 library(jsonlite)
 plastics <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2021/2021-01-26/plastics.csv')
 
@@ -459,11 +461,45 @@ wide_data_fixed <- wide_data |>
 final_merged <- final |>
   left_join(wide_data_fixed, by = c("country", "year"))
 
-plastics_clean |>
+plastics |>
   anti_join(wide_data_fixed, by = c("country", "year")) |>
   distinct(country, year)
 ```
 
+## Data Summary
+
 ```{r}
-final_merged
+summary_country_year |>
+  gt() |>
+  tab_header(
+    title = "Country-Year Summary of Plastics and Environmental Data"
+  ) |>
+  cols_label(
+    country = "Country",
+    year = "Year",
+    total_plastic = "Total Plastic Items Collected",
+    avg_plastic = "Average Plastic Items Collected",
+    footprint_per_capita = "Ecological Footprint per Capita",
+    biocapacity_per_capita = "Biocapacity per Capita",
+    hdi = "HDI",
+    population = "Population"
+  ) |>
+  fmt_number(
+    columns = c(total_plastic, avg_plastic, population),
+    decimals = 0
+  ) |>
+  fmt_number(
+    columns = c( footprint_per_capita, biocapacity_per_capita, hdi),
+    decimals = 2
+  )
 ```
+
+This data set is countries and territories in Global Footprint Network’s National Footprint and Biocapacity Accounts. The data is from the Footprint Network Open Data Platform, which reports nation level results and lets users compare countries on metrics such as Total Biocapacity and Total Ecological Footprint. The data is from 1961 to the present. The data is meant to show if places live within their ecological means or not by comparing ecological demand, measured by Ecological Footprint, against ecological supply. The platform presents this data through an interactive country trends that let users select indicators and countries to explore changes over time.
+
+
+```{r}
+# large joined metadataset
+final_merged
+
+```
+
