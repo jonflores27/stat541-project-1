@@ -274,12 +274,14 @@ plastics_clean2 <- plastics |>
 
 
 ```{r}
-plastics_clean3 <- plastics_clean2 |> 
-  mutate(country = case_when(
+plastics_clean3 <- plastics_clean |> 
+  mutate(country = str_to_title(country),
+         country = str_squish(country),
+country = case_when(
     country == "Taiwan_ Republic Of China (Roc)" ~ "Taiwan",
     country == "United Kingdom Of Great Britain & Northern Ireland" ~ "Northern Ireland",
     country == "Cote D_ivoire" ~ "Cote D'ivoire",
-    country == "Empty" ~ "Random",
+    country == "United States Of America" ~ "United States",
     TRUE ~ country
 ))
 
@@ -299,7 +301,8 @@ key = "cdmGICr9oeapeWwOYXNvZsobPqAiUhnvL0ZycpwB"
 
 mining2 <- function(country){
 
-  url <- str_c("https://api.api-ninjas.com/v1/country?name=", country)
+  url <- str_c("https://api.api-ninjas.com/v1/country?name=",
+               URLencode(country))
 
   res <- GET(
     url = url,
@@ -322,6 +325,10 @@ safe_mining <- possibly(mining2, otherwise = tibble())
 result <- map(test_list, safe_mining) |>
   bind_rows(.id = "id")
 ```
+```{r}
+safe_mining("United%20States")
+```
+
 
 ```{r}
 result <- result |>
@@ -341,6 +348,21 @@ final <- plastics_clean3 |>
 
 
 ```{r}
-final
+colnames(final)
+```
+
+```{r}
+final <- final |> 
+  select(country:volunteers, gdp, imports, pop_density, population, employment_industry,employment_agriculture, employment_services) |> 
+  mutate(across(gdp:employment_services, as.numeric))
+```
+```{r}
+final |> 
+  group_by(country, year) |> 
+  summarise(total_waste = sum(total),
+            industry = mean(employment_industry),
+            service = mean(employment_services),
+            ag = mean(employment_agriculture),
+            .groups = "drop")
 ```
 
