@@ -266,11 +266,6 @@ Stat 541 only: Summary tables must at a minimum have: Formatted values (e.g., de
 
 # Check in 4
 
-```{r}
-plastics_clean2 <- plastics |> 
-  mutate(country = str_to_title(country),
-         country = str_squish(country))
-```
 
 
 ```{r}
@@ -287,6 +282,8 @@ country = case_when(
 
 test_list <- unique(plastics_clean3$country) |> 
   as.list()
+
+test_list2 <- unique(plastics_clean$country)
 
 ```
 
@@ -322,17 +319,15 @@ mining2 <- function(country){
 safe_mining <- possibly(mining2, otherwise = tibble())
 
 
-result <- map(test_list, safe_mining) |>
-  bind_rows(.id = "id")
-```
-```{r}
-safe_mining("United%20States")
-```
-
-
-```{r}
-result <- result |>
+result <- map(test_list2, safe_mining) |>
+  bind_rows(.id = "id")|>
   mutate(across(everything(), as.character))
+```
+
+
+
+```{r}
+result 
 ```
 
 ```{r}
@@ -341,7 +336,7 @@ result
 
 
 ```{r}
-final <- plastics_clean3 |>
+final <- plastics_clean |>
   left_join(result, by = c("country" = "input_country"))
 ```
 
@@ -352,17 +347,24 @@ colnames(final)
 ```
 
 ```{r}
-final <- final |> 
-  select(country:volunteers, gdp, imports, pop_density, population, employment_industry,employment_agriculture, employment_services) |> 
-  mutate(across(gdp:employment_services, as.numeric))
-```
-```{r}
 final |> 
-  group_by(country, year) |> 
+  select(country:volunteers, gdp, imports, pop_density, population, employment_industry,employment_agriculture, employment_services) |> 
+  mutate(across(gdp:employment_services, as.numeric)) |> 
+  group_by(country) |> 
   summarise(total_waste = sum(total),
             industry = mean(employment_industry),
             service = mean(employment_services),
             ag = mean(employment_agriculture),
-            .groups = "drop")
+            .groups = "drop") |> 
+  gt() |> 
+  tab_style(style = cell_text(weight = "bold"),
+            locations = cells_column_labels()) |>
+  tab_caption("Waste Compareed to Employment Sectorization") |>
+  cols_label(country = "Country", 
+             total_waste = "Total Count of Plastics",
+             industry = "Percent of Employment in Industry Sector",
+             service = "Percent of Employment in Service Sector",
+             ag = "Percent of Employment in Agriculture Sector")
 ```
+
 
