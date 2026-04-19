@@ -370,7 +370,7 @@ final |>
   gt() |> 
   tab_style(style = cell_text(weight = "bold"),
             locations = cells_column_labels()) |>
-  tab_caption("Waste Compareed to Employment Sectorization") |>
+  tab_caption("Waste Compared to Employment Sectorization") |>
   cols_label(country = "Country", 
              total_waste = "Total Count of Plastics",
              industry = "Percent of Employment in Industry Sector",
