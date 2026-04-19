@@ -269,6 +269,8 @@ Stat 541 only: Summary tables must at a minimum have: Formatted values (e.g., de
 
 
 ```{r}
+#unused, used plastics_clean1
+
 plastics_clean3 <- plastics_clean |> 
   mutate(country = str_to_title(country),
          country = str_squish(country),
@@ -330,9 +332,7 @@ result <- map(test_list2, safe_mining) |>
 result 
 ```
 
-```{r}
-result
-```
+
 
 
 ```{r}
@@ -368,3 +368,102 @@ final |>
 ```
 
 
+
+
+
+
+
+
+
+
+
+```{r}
+library(httr)
+library(jsonlite)
+plastics <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2021/2021-01-26/plastics.csv')
+
+url <- "https://api.footprintnetwork.org/v1/types"
+user_name <- "username"
+api_key <- "1gs79s099C3TboOH32857V43Bur6rQssvLHAjF9e5B0GB23I65V6"
+#checkin
+response <- GET(
+  url,
+  authenticate(user = user_name, password = api_key, type = "basic"),
+  add_headers(Accept = "application/json")
+)
+
+response
+```
+
+```{r}
+years <- c(2019, 2020)
+
+all_data <- lapply(years, function(y) {
+  url <- paste0("https://api.footprintnetwork.org/v1/data/all/", y, "/all")
+  
+  res <- GET(
+    url,
+    authenticate(user_name, api_key, type = "basic"),
+    add_headers(Accept = "application/json")
+  )
+  
+fromJSON(rawToChar(res$content))
+  }) |>
+  bind_rows()
+```
+
+```{r}
+wide_data <- all_data |>
+  select(year, countryName, isoa2, record, value) |>
+    pivot_wider(
+    names_from = record,
+    values_from = value
+    ) |>
+  rename(country = countryName)
+  
+
+joined_data <- left_join(plastics, wide_data, by = c("country", "year"))
+```
+
+```{r}
+
+#Check unmatched plastic rows
+plastics |>
+  anti_join(wide_data, by = c("country", "year")) |>
+  distinct(country, year)
+```
+
+```{r}
+
+wide_data_fixed <- wide_data |>
+  mutate(api_country = country) |>
+  mutate(
+    country = case_when(
+      country == "Côte d'Ivoire" ~ "Cote D_ivoire",
+      country == "Ecuador" & year == 2019 ~ "ECUADOR",
+      country == "Ecuador" ~ "Ecuador",
+      country == "Nigeria" & year == 2019 ~ "NIGERIA",
+      country == "Nigeria" ~ "Nigeria",
+      country == "Tanzania, United Republic of" ~ "Tanzania",
+      country == "Viet Nam" ~ "Vietnam",
+      country == "Korea, Republic of" ~ "Korea",
+      country == "Türkiye" ~ "Turkey",
+      country == "United Kingdom" & year == 2020 ~ "United Kingdom of Great Britain & Northern Ireland",
+      country == "United Kingdom" ~ "United Kingdom",
+      country == "China Hong Kong SAR" ~ "Hong Kong",
+      country == "Taiwan" ~ "Taiwan_ Republic of China (ROC)",
+      TRUE ~ country
+    )
+  )
+
+final_merged <- final |>
+  left_join(wide_data_fixed, by = c("country", "year"))
+
+plastics_clean |>
+  anti_join(wide_data_fixed, by = c("country", "year")) |>
+  distinct(country, year)
+```
+
+```{r}
+final_merged
+```
