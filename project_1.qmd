@@ -516,8 +516,7 @@ summary_country_year |>
   )
 ```
 
-This data set is countries and territories in Global Footprint Network’s National Footprint and Biocapacity Accounts. The data is from the Footprint Network Open Data Platform, which reports nation level results and lets users compare countries on metrics such as Total Biocapacity and Total Ecological Footprint. The data is from 1961 to the present. The data is meant to show if places live within their ecological means or not by comparing ecological demand, measured by Ecological Footprint, against ecological supply. The platform presents this data through an interactive country trends that let users select indicators and countries to explore changes over time.
-
+This dataset was obtained through the Global Footprint Network API by pulling country level data for 2019 and 2020 from the National Footprint and Biocapacity Accounts. The API returns environmental and development indicators for countries and territories, including metrics such as Total Biocapacity and Total Ecological Footprint. After retrieving the data, I combined the yearly responses, reshaped them into a country year format, and matched them to the plastics dataset using country and year. This allowed me to incorporate environmental context into the original dataset and compare plastic collection outcomes with  a nations ecological state.
 
 ```{r}
 # large joined metadataset
