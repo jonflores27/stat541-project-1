@@ -319,6 +319,10 @@ mining2 <- function(country){
 }
 ```
 
+Googled on how to use map if thee were requests than an API would no accept, reached:
+https://stackoverflow.com/questions/50486527/how-to-use-map-with-possibly 
+
+
 ```{r}
 safe_mining <- possibly(mining2, otherwise = tibble())
 
