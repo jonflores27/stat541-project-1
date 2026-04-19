@@ -473,6 +473,24 @@ plastics |>
 ## Data Summary
 
 ```{r}
+summary_country_year <- final_merged |>
+  group_by(country, year) |>
+  summarise(
+    total_plastic = sum(grand_total),
+    avg_plastic = mean(grand_total),
+    footprint_per_capita = first(EFConsPerCap[!is.na(EFConsPerCap)]),
+    biocapacity_per_capita = first(BiocapPerCap[!is.na(BiocapPerCap)]),
+    hdi = first(HDI[!is.na(HDI)]),
+    population = first(Population[!is.na(Population)]),
+    .groups = "drop"
+  ) |>
+  filter_out(country == "EMPTY") |>
+  mutate(country = str_to_title(country))
+
+```
+
+
+```{r}
 summary_country_year |>
   gt() |>
   tab_header(
@@ -503,7 +521,8 @@ This data set is countries and territories in Global Footprint Network’s Natio
 
 ```{r}
 # large joined metadataset
-final_merged
+final_merged 
 
 ```
+
 
