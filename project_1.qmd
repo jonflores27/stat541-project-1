@@ -264,7 +264,7 @@ Stat 541 only: Summary tables must at a minimum have: Formatted values (e.g., de
 
 
 
-# Check in 4
+# Check in 3:
 
 ## API With iteration
 
@@ -518,6 +518,8 @@ summary_country_year |>
 
 This dataset was obtained through the Global Footprint Network API by pulling country level data for 2019 and 2020 from the National Footprint and Biocapacity Accounts. The API returns environmental and development indicators for countries and territories, including metrics such as Total Biocapacity and Total Ecological Footprint. After retrieving the data, I combined the yearly responses, reshaped them into a country year format, and matched them to the plastics dataset using country and year. This allowed me to incorporate environmental context into the original dataset and compare plastic collection outcomes with  a nations ecological state.
 
+# Check In 4. Data Vizualization and models
+
 ```{r}
 #| eval: false
 
@@ -539,6 +541,8 @@ readRDS("full_table")
 
 ```
 
+
+## Density Ridges 
 ```{r}
 
 
@@ -593,3 +597,208 @@ final_merged |>
 
 Data truncated at 3500, some outliars were excluded, GDP per capita cutofs were given by google
 color picking tool was used for subtitle
+
+
+## Bubble Plot
+```{r}
+final_merged |>
+  mutate(region = countrycode::countrycode(country,
+            origin = "country.name",
+            destination = "continent"),
+         total_normalized = total / num_events, 
+         gdp_trillions = gdp / 1e6) |>
+  filter_out(country == "EMPTY",
+           total == 0,
+           is.na(total),
+           is.na(gdp_trillions),
+           gdp_trillions == 0, 
+           is.na(region)) |>
+  group_by(country, region, year) |>
+  summarize(total_plastic = sum(total_normalized, na.rm = T), 
+            gdp_trillions = mean(gdp_trillions, na.rm = T), 
+            Population = mean(Population, na.rm = T)) |>
+  ggplot(aes(x = gdp_trillions, y = total_plastic, size = Population, 
+             color = region)) +
+    geom_point(alpha = 0.5) +
+    scale_size(range = c(.1, 15), name ="Population") +
+  labs(color = "Region",
+       x = "GDP (Trillions)", 
+       title = "Plastic Pollution Found in Audits vs. GDP for 2019 and 2020",
+       subtitle = "Total Plastic per Cleanup Event",
+       y = "",
+       alt = "Bubble chart showing plastic items found per cleanup event vs GDP in trillions,
+       colored by region and sized by population") +
+  coord_cartesian(ylim = c(0, 26000),
+                  xlim = c(0,25)) + 
+  scale_color_discrete(na.translate = FALSE) +
+  scale_x_sqrt() +
+  facet_wrap(~ year) +
+  theme_light() + scale_color_manual(values = c("Africa" = "mediumspringgreen", "Americas" = "orchid4", 
+                                "Asia" = "darkorange", "Europe" = "deeppink", 
+                                "Oceania" = "royalblue"))
+```
+
+
+
+## Models
+
+Question: How do demographic and economic characteristics of countries along with their geographic location relate to differences in plastic collected during cleanup audits?
+```{r}
+library(dplyr)
+library(broom)
+library(gt)
+library(scales)
+library(car)
+
+model_df <- final_merged |>
+  group_by(country, year) |>
+  summarise(
+    total_plastic = sum(total, na.rm = TRUE),
+    Population = first(na.omit(Population)),
+    pop_density = first(na.omit(pop_density)),
+    employment_industry = first(na.omit(employment_industry)),
+    HDI = first(na.omit(HDI)),
+    gdp = first(na.omit(gdp)),
+    imports = first(na.omit(imports)),
+    infant_mortality = first(na.omit(infant_mortality)),
+    region = first(na.omit(region)),
+    .groups = "drop"
+  ) |>
+  mutate(
+    region = as.factor(region),
+    log_total_plastic = log(total_plastic)
+  ) 
+
+fit_1 <- lm(
+  log_total_plastic ~ Population + pop_density + region,
+  model_df
+)
+
+fit_2 <- lm(
+  log_total_plastic ~ Population + pop_density + employment_industry + region,
+  model_df
+)
+
+fit_3 <- lm(
+  log_total_plastic ~ Population + pop_density + HDI + region,
+  model_df
+)
+
+fit_4 <- lm(
+  log_total_plastic ~ Population + pop_density + imports + region,
+  model_df
+)
+
+fit_5 <- lm(
+  log_total_plastic ~ Population + pop_density + infant_mortality + region,
+  model_df
+)
+
+
+fit_6 <- lm(
+  log_total_plastic ~ Population + pop_density + region + gdp,
+  model_df
+)
+
+fit_7 <- lm(
+  log_total_plastic ~ Population + pop_density + region + gdp + imports,
+  model_df
+)
+
+adj_rsq <- list(
+  summary(fit_1)$adj.r.squared,
+  summary(fit_2)$adj.r.squared,
+  summary(fit_3)$adj.r.squared,
+  summary(fit_4)$adj.r.squared,
+  summary(fit_5)$adj.r.squared,
+  summary(fit_6)$adj.r.squared,
+  summary(fit_7)$adj.r.squared
+)
+
+adj_rsq
+
+
+vif_results <- list(
+  vif(fit_1),
+  vif(fit_2),
+  vif(fit_3),
+  vif(fit_4),
+  vif(fit_5),
+  vif(fit_6),
+  vif(fit_7)
+)
+
+vif_results
+
+```
+
+```{r}
+
+model_df <- final_merged |>
+  group_by(country, year) |>
+  summarise(
+    total_plastic = sum(total, na.rm = TRUE),
+    Population_millions = first(na.omit(Population)) / 1000000,
+    pop_density = first(na.omit(pop_density)),
+    gdp_billions = first(na.omit(gdp)) / 1000000000,
+    region = first(na.omit(region)),
+    .groups = "drop"
+  ) |>
+  mutate(
+    region = as.factor(region),
+    log_total_plastic = log(total_plastic)
+  ) 
+
+fit_6 <- lm(
+  log_total_plastic ~ Population_millions + pop_density + gdp_billions + region,
+  model_df
+)
+
+tbl <- tidy(fit_6, conf.int = TRUE) |>
+  mutate(
+    Predictor = dplyr::recode(term,
+      `(Intercept)` = "Intercept",
+      `Population_millions` = "Population (millions)",
+      `pop_density` = "Population Density",
+      `gdp_billions` = "GDP (billions)"
+    ),
+    Predictor = sub("^region", "Region: ", Predictor)
+  ) |>
+  select(
+    Predictor,
+    Estimate = estimate,
+    `Std. Error` = std.error,
+    `t value` = statistic,
+    `p value` = p.value,
+    `95% CI Lower` = conf.low,
+    `95% CI Upper` = conf.high
+  )
+
+tbl |>
+  gt() |>
+  tab_header(
+    title = md("**Linear Regression Predicting Logged Plastic Collected by Country, Year**"),
+    subtitle = "Response: log(total_plastic)"
+  ) |>
+  cols_label(
+    Predictor = md("**Predictor**"),
+    Estimate = md("**Estimate**"),
+    `Std. Error` = md("**Std. Error**"),
+    `t value` = md("**t value**"),
+    `p value` = md("**p value**"),
+    `95% CI Lower` = md("**95% CI Lower**"),
+    `95% CI Upper` = md("**95% CI Upper**")
+  ) |>
+  fmt_number(
+    columns = c(Estimate, `Std. Error`, `t value`, `95% CI Lower`, `95% CI Upper`),
+    decimals = 4
+  ) |>
+  fmt_number(columns = `p value`, decimals = 3) |>
+  tab_source_note(
+    source_note = md(
+       "The response variable was transformed as log(total_plastic) to meet linear regression assumptions"
+    )
+  )
+```
+
+A linear regression model was fit to examine how demographic, economic, and regional factors relate to differences in plastic collected during cleanup audits across countries and years. The model included population (in millions), population density, GDP (in billions), and regions as predictors of the log transformed plastic counts. The results show that population density is significantly associated with plastic collected (p = 0.042), indicating that more densely populated countries tend to have lower levels of plastic collected, holding the other factors constant. Regional differences were the strongest predictors, with countries in Western Asia showing significantly lower levels compared to the reference region (p = 0.001). Total population (p = 0.212) and GDP (p = 0.169) were not statistically significant, which suggests that the economic size does not explain variation in plastic collected. The results show that geographic location and population distribution are more important than economic indicators in explaining differences in plastic collected.
