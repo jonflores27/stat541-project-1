@@ -604,6 +604,8 @@ color picking tool was used for subtitle
 
 ## Bubble Plot
 ```{r}
+#| warning: false
+
 final_merged |>
   mutate(region = countrycode::countrycode(country,
             origin = "country.name",
