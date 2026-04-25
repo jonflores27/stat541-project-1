@@ -588,7 +588,10 @@ final_merged |>
       <span style='color: #b5aa5f;'>Middle Income</span>,
     and <span style='color: #5e8684;'>Low Income</span>",
     x = "Waste Amount",
-    y = "") +
+    y = "",
+    alt = "Density ridge plot showing the density of plastic waste audited
+    for multiple types of plastic. Colored by GDP per capita category,
+    High, Middle, and Low") +
   theme_dark() +
   theme(plot.subtitle =  element_markdown(),
         legend.position = "none") 
