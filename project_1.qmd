@@ -649,6 +649,8 @@ final_merged |>
 
 Question: How do demographic and economic characteristics of countries along with their geographic location relate to differences in plastic collected during cleanup audits?
 ```{r}
+#| warning: false
+
 library(dplyr)
 library(broom)
 library(gt)
@@ -738,6 +740,7 @@ vif_results
 ```
 
 ```{r}
+#| warning: false
 
 model_df <- final_merged |>
   group_by(country, year) |>
