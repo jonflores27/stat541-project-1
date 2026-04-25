@@ -519,9 +519,74 @@ summary_country_year |>
 This dataset was obtained through the Global Footprint Network API by pulling country level data for 2019 and 2020 from the National Footprint and Biocapacity Accounts. The API returns environmental and development indicators for countries and territories, including metrics such as Total Biocapacity and Total Ecological Footprint. After retrieving the data, I combined the yearly responses, reshaped them into a country year format, and matched them to the plastics dataset using country and year. This allowed me to incorporate environmental context into the original dataset and compare plastic collection outcomes with  a nations ecological state.
 
 ```{r}
-# large joined metadataset
-final_merged 
+#| eval: false
+
+
+# large joined metadata set and saved to avoid a minute long wait every time i open R studio
+# set to eval false
+
+
+saveRDS(final_merged, file = "full_table")
 
 ```
 
+```{r}
+#| eval: false
 
+#readin the dataset, set to eval false
+
+readRDS("full_table")
+
+```
+
+```{r}
+
+
+library(ggridges)
+library(RColorBrewer)
+library(viridis)
+library(ggtext)
+
+
+final_merged |> 
+  filter(year == 2019) |> 
+  group_by(country) |> 
+  summarize(unknown = sum(empty),
+            hdpe = sum(hdpe),
+            ldpe = sum(ldpe),
+            other = sum(o),
+            pet = sum(pet),
+            pp = sum(pp),
+            ps = sum(ps),
+            pvc = sum(pvc),
+            total = sum(total),
+            gdp_per_capita = mean(gdp_per_capita),
+            hdi = mean(HDI),
+            .groups = "drop") |> 
+  mutate(income_group = case_when(
+    gdp_per_capita < 1500 ~ "Low Income",
+    gdp_per_capita > 12000 ~ "High Income",
+    TRUE ~ "Middle Income")) |> 
+  pivot_longer(
+    cols = unknown:pvc,
+    names_to = "plastic_type",
+    values_to = "waste") |> 
+  filter(waste <= 3500) |> 
+  
+  ggplot(mapping = aes(x = waste,
+                       y = plastic_type,
+                       fill = income_group)) +
+  geom_density_ridges(alpha = 0.4) +
+  scale_fill_viridis(discrete=TRUE) +
+  labs(
+    title = "Plastic Waste Distribution by Income Level",
+    subtitle = "Divided into <span style='color: #6a546f;'>High Income</span>, 
+      <span style='color: #b5aa5f;'>Middle Income</span>,
+    and<span style='color: #5e8684;'>Low Income</span>",
+    x = "Waste Amount",
+    y = "") +
+  theme_dark() +
+  theme(plot.subtitle =  element_markdown(),
+        legend.position = "none") 
+  
+```
