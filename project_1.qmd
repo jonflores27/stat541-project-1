@@ -579,10 +579,10 @@ final_merged |>
   geom_density_ridges(alpha = 0.4) +
   scale_fill_viridis(discrete=TRUE) +
   labs(
-    title = "Plastic Waste Distribution by Income Level",
+    title = "Plastic Waste Type Distribution of Countries by GDP per Capita",
     subtitle = "Divided into <span style='color: #6a546f;'>High Income</span>, 
       <span style='color: #b5aa5f;'>Middle Income</span>,
-    and<span style='color: #5e8684;'>Low Income</span>",
+    and <span style='color: #5e8684;'>Low Income</span>",
     x = "Waste Amount",
     y = "") +
   theme_dark() +
@@ -590,3 +590,6 @@ final_merged |>
         legend.position = "none") 
   
 ```
+
+Data truncated at 3500, some outliars were excluded, GDP per capita cutofs were given by google
+color picking tool was used for subtitle
