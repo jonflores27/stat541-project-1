@@ -537,7 +537,7 @@ saveRDS(final_merged, file = "full_table")
 
 #readin the dataset, set to eval false
 
-readRDS("full_table")
+final_merged <- readRDS("full_table")
 
 ```
 
