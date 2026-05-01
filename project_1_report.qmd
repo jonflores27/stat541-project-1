@@ -223,7 +223,7 @@ final_merged |>
 
 ```{r}
 #| label: Data Model
-#| warning: false
+
 
 model_df <- final_merged |>
   group_by(country, year) |>
